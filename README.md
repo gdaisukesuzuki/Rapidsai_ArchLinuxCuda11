@@ -25,9 +25,10 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 ## Order in build
 
 
-1.  [protobuf](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/protobuf/PKGBUILD)
+1.  [protobuf-static](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/protobuf-static/PKGBUILD)
 ```
-* Set ver 3.12.3 (do not build ver 3.13 or higher).
+* Set ver 3.12.4 (do not build ver 3.13 or higher).
+* static verion needed for building treelite
 ```
 
 2.  [arrow-cuda](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/arrow-0.17.1/PKGBUILD) / [python-pyarrow-cuda](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/python-pyarrow-0.17.1/PKGBUILD)
