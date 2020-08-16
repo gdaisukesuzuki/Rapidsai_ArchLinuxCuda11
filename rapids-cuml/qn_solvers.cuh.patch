@@ -1,0 +1,25 @@
+*** cuml/cpp/src/glm/qn/qn_solvers.cuh-dist	2020-07-20 22:39:52.954504564 +0900
+--- cuml/cpp/src/glm/qn/qn_solvers.cuh	2020-07-20 22:42:27.326791719 +0900
+***************
+*** 229,238 ****
+  
+    auto f_wrap = [&f, &l1_penalty, &pg_limit, &stream](
+                    SimpleVec<T> &x, SimpleVec<T> &grad, T *dev_scalar,
+!                   cudaStream_t stream) {
+!     T tmp = f(x, grad, dev_scalar, stream);
+      SimpleVec<T> mask(x.data, pg_limit);
+!     return tmp + l1_penalty * nrm1(mask, dev_scalar, stream);
+    };
+  
+    *k = 0;
+--- 229,238 ----
+  
+    auto f_wrap = [&f, &l1_penalty, &pg_limit, &stream](
+                    SimpleVec<T> &x, SimpleVec<T> &grad, T *dev_scalar,
+!                   cudaStream_t stream_) {
+!     T tmp = f(x, grad, dev_scalar, stream_);
+      SimpleVec<T> mask(x.data, pg_limit);
+!     return tmp + l1_penalty * nrm1(mask, dev_scalar, stream_);
+    };
+  
+    *k = 0;
