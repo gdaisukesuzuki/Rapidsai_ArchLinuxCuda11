@@ -7,7 +7,7 @@ a  procedure of building NVIDIA's [RAPIDS](https://rapids.ai/) under Arch Linux 
 
 ** Intel or AMD's CPU
 
-** NVIDIA's Single GPU which has architecture whose type is Pascal / Volta / Turing. (eg GeForce / TITAN / Tesla / Quadro)
+** NVIDIA's Single GPU which has architecture whose type is Pascal / Volta / Turing / (Ampere?). (eg GeForce / TITAN / Tesla / Quadro)
 
 * Software
 
@@ -42,50 +42,43 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 ```
 * Build  Python Library for enabling to run cmake during "python setup.py build"
 ```
-4.  [Cupy](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/cupy/PKGBUILD)
+4.  [Cupy](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/cupy/PKGBUILD)
 ```
 * An implementation of NumPy-compatible  array on CUDA presented by Preferred Networks.
-* AUR provides the same package. However,  AUR only contains older ver (7.2.0). which does not support CUDA 10.2 , (current ver. is 7.4.0) 
+* AUR provides the same package. However,  AUR only contains older ver (7.2.0). which does not support CUDA 11.0 , (current ver. is 8.0.0b5) 
 *  See [github](https://github.com/cupy/cupy)
 ```
 
-5.  [python-LLVMlite](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/blob/master/python-llvmlite/PKGBUILD) / [python-Numba](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/blob/master/python-numba/PKGBUILD)
+5.  [OpenUCX](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/openucx) / [python-ucx-py](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-ucx-py/PKGBUILD)
 ```
-* An open source JIT compiler that translates a subset of Python and NumPy code into fast machine code.
-* These PKGBUILDs provide llvmlite 0.33.0rc1 and Numba 0.50.0rc1, respectively.
-*  See githubs. [llvmlite](https://github.com/numba/llvmlite) and [numba](https://github.com/numba/numba)
+* an optimized communication layer for Message Passing (MPI), PGAS/OpenSHMEM libraries and RPC/data-centric applications. and wrapper for python.
 ```
 
-
-6.  [RMM](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-rmm/PKGBUILD)
-```
-* RAPIDS Memory Manager provided by  Rapids.
-* See [github](https://github.com/rapidsai/rmm)
-```
-
-7.  [cuDF](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cudf/PKGBUILD)
-```
-*  a GPU DataFrame taking place of pandas
-* See [github](https://github.com/rapidsai/cudf)
-```
-
-8.  [cuML](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cuml/PKGBUILD)
-```
-*  A suite of libraries that implement machine learning algorithms presented by Rapids.
-* See [github](https://github.com/rapidsai/cuml)
-```
-
-3. [treelite](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/treelite/PKGBUILD)
+6. [treelite](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/treelite/PKGBUILD)
 
 ```
 * a model compiler for efficient deployment of decision tree ensembles 
 * Builds Library and its Python-Wrapper
 ```
 
-4. [Benchmark](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/blob/master/benchmark/cuml_benchmarks.ipynb)
 
+7.  [RMM](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-rmm/PKGBUILD)
 ```
-* Benchmark Result 
+* RAPIDS Memory Manager provided by  Rapids.
+* See [github](https://github.com/rapidsai/rmm)
 ```
-See [URL](https://github.com/rapidsai/cuml/blob/branch-0.14/notebooks/tools/cuml_benchmarks.ipynb)
+
+8.  [cuDF](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cudf/PKGBUILD)
+```
+*  a GPU DataFrame taking place of pandas
+* See [github](https://github.com/rapidsai/cudf)
+```
+
+9.  [cuML](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cuml/PKGBUILD)
+```
+*  A suite of libraries that implement machine learning algorithms presented by Rapids.
+* See [github](https://github.com/rapidsai/cuml)
+```
+
+
 
