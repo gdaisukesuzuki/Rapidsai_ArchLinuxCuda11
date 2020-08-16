@@ -49,32 +49,43 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 *  See [github](https://github.com/cupy/cupy)
 ```
 
-5.  [OpenUCX](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/openucx) / [python-ucx-py](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-ucx-py/PKGBUILD)
+5.  [Openuxc](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/openucx) / [python-ucx-py](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-ucx-py/PKGBUILD)
 ```
 * an optimized communication layer for Message Passing (MPI), PGAS/OpenSHMEM libraries and RPC/data-centric applications. and wrapper for python.
+* See [OpenUCX's https://github.com/openucx/ucx)
+* See [ucx-py's github](https://github.com/rapidsai/ucx-py)
 ```
 
-6. [treelite](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/treelite/PKGBUILD)
+
+6. [XGBoost](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/xgboost/PKGBUILD)
+
+```
+* an optimized distributed gradient boosting library 
+* Builds Library and its Python-Wrapper
+* See [github](https://github.com/dmlc/xgboost)
+```
+
+7. [treelite](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/treelite/PKGBUILD)
 
 ```
 * a model compiler for efficient deployment of decision tree ensembles 
 * Builds Library and its Python-Wrapper
+* See [github](https://github.com/dmlc/treelite)
 ```
 
-
-7.  [RMM](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-rmm/PKGBUILD)
+8  [RMM](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-rmm/PKGBUILD)
 ```
 * RAPIDS Memory Manager provided by  Rapids.
 * See [github](https://github.com/rapidsai/rmm)
 ```
 
-8.  [cuDF](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cudf/PKGBUILD)
+9  [cuDF](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cudf/PKGBUILD)
 ```
 *  a GPU DataFrame taking place of pandas
 * See [github](https://github.com/rapidsai/cudf)
 ```
 
-9.  [cuML](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cuml/PKGBUILD)
+10 [cuML](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cuml/PKGBUILD)
 ```
 *  A suite of libraries that implement machine learning algorithms presented by Rapids.
 * See [github](https://github.com/rapidsai/cuml)
