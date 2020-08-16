@@ -1,0 +1,43 @@
+# Maintainer: Vincenzo Maffione <v.maffione at gmail dot com>
+
+pkgname=openucx
+pkgver=1.9.0rc1
+_pkgver=1.9.0-rc1
+pkgrel=0
+pkgdesc="Unified Communication X (http://www.openucx.org)"
+arch=('any')
+url="http://www.openucx.org"
+license=('BSD')
+depends=('cuda' 'gcc9' 'numactl' 'rdma-core')
+makedepends=('git')
+# source=("git+https://github.com/openucx/ucx.git#tag=v${pkgver}")
+source=('git+https://github.com/openucx/ucx.git#tag=v1.9.0-rc1')
+noextract=()
+md5sums=('SKIP')
+
+build() {
+	export CHDA_HOME=/opt/cuda
+  export CC=/usr/bin/gcc-9
+  export CXX=/usr/bin/g++-9
+  export CUDAHOSTCXX=/usr/bin/g++-9
+
+    cd $srcdir/ucx
+    ./autogen.sh
+    mkdir build
+    cd build
+    ../contrib/configure-release --prefix=/usr --with-cuda=$CUDA_HOME --enable-mt CFLAGS="-O3 -march=skylake -mtune=native -Wno-address-of-packed-member" CPPFLAGS="-I/opt/cuda/include" LDFLAGS="-L/opt/cuda/lib64"
+    make -j6
+}
+
+file_is_elf()
+{
+    local filename=$1
+    ELF="1"
+    readelf -h "$filename" > /dev/null 2>&1 || ELF="0"
+    echo "$ELF"
+}
+
+package() {
+    cd "$srcdir"/ucx/build
+    make DESTDIR="$pkgdir/" install
+}
