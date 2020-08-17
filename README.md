@@ -92,5 +92,33 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 * See [github](https://github.com/rapidsai/cuml)
 ```
 
+10.  [libcypher-parse](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/libcypher-parser/PKGBUILD)
+```
+* required for building cuGraph
+```
+
+11.  [cuSignal](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cusignal/PKGBUILD)
+```
+* GPU accelerated signal processing which may replace scipy signal?
+* See [github](https://github.com/rapidsai/cusignal)
+```
+
+12. [rapids-cuSpatial](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cuspatial/PKGBUILD)
+```
+* a library for handling spatial and trajectory data.
+* See [github](https://github.com/rapidsai/cuspatial)
+```
+
+13. [rapids-cuGraph](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cugraph/PKGBUILD)
+```
+* a collection of GPU accelerated graph algorithms.
+* See [github](https://github.com/rapidsai/cusgraph)
+```
+
+14. [rapids-cuxfilter](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/rapids-cuxfilter)
+```
+* cuxfilter ( ku-cross-filter ) is a RAPIDS framework to connect web visualizations to GPU accelerated crossfiltering.
+* See [github](https://github.com/rapidsai/cuxfilter)
+```
 
 
