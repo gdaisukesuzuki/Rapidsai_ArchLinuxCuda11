@@ -1,0 +1,72 @@
+# Maintainer: Sven-Hendrik Haase <svenstaro@gmail.com>
+# Contributor: bartus <arch-user-repoᘓbartus.33mail.com>
+# Contributor: pingplug <pingplug@foxmail.com>
+# Contributor: cornholio <vigo.the.unholy.carpathian@gmail.com>
+
+pkgname=(rapids-cuxfilter)
+_pkgname=cuxfilter
+pkgver=0.16.0a.r22.g1445f1b
+pkgrel=1
+pkgdesc="RAPIDS ML"
+arch=('x86_64')
+url="https://rapids.ai/"
+license=('custom')
+depends=('rapids-cudf' 'python-pydeck')
+# source=("${_pkgname}::git+https://github.com/rapidsai/cuxfilter.git")
+source=("${_pkgname}::git+https://github.com/rapidsai/cuxfilter.git#branch=branch-0.15")
+
+sha256sums=('SKIP')
+# sha256sums=('SKIP' 'SKIP')
+# sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+pkgver() {
+    cd cuxfilter
+
+    local _version
+    local _revision
+    local _shorthash
+
+    _version="$(git tag | sort -Vr | head -n1 | sed 's/^v//')"
+    _revision="$(git rev-list v"${_version}"..HEAD --count)"
+    _shorthash="$(git rev-parse --short HEAD)"
+
+    printf '%s.r%s.g%s' "$_version" "$_revision" "$_shorthash"
+}
+
+
+build() {
+  cd "${srcdir}"
+  # patch -p0 < windows.py.patch
+  # patch -p0 < spectral.py.patch
+
+  cd "${srcdir}/cuxfilter"
+  git submodule update --init --remote --recursive
+
+
+    export LD_LIBRARY_PATH=/usr/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:/opt/magma/lib
+    export CUDA_PATH=/opt/cuda
+    export CUDA_HOME=/opt/cuda
+
+    export PATH=/opt/cuda:$PATH
+    export CFLAGS='-march=skylake -mtune=native -O3 -pipe -fstack-protector -I/opt/cuda/include'
+    export NVCC='/opt/cuda/bin/nvcc'
+    export CUB_PATH=/usr
+    export LDFLAGS=-L/opt/cuda/lib64
+    export GPU_ARCHS=75
+
+    cd "${srcdir}"/cuxfilter/python
+#     find . -name '*.py' | xargs fgrep -l "numba.types" | xargs sed -i -e 's/numba.types/numba.core.types/g'
+
+    python setup.py build_ext  --inplace --verbose
+
+
+}
+
+package_rapids-cuxfilter() {
+  cd "${srcdir}"/cuxfilter/python
+  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1
+
+  install -Dm644 ${srcdir}/cuxfilter/LICENSE ${pkgdir}/usr/share/licenses/rapids-cuxfilter/LICENSE
+}
+
+# vim:set ts=2 sw=2 et:
