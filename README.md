@@ -115,7 +115,7 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 * See [github](https://github.com/rapidsai/cusgraph)
 ```
 
-14. [rapids-cuxfilter](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/rapids-cuxfilter)
+14. [rapids-cuxfilter](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/rapids-cuxfilter/PKGBUILD)
 ```
 * cuxfilter ( ku-cross-filter ) is a RAPIDS framework to connect web visualizations to GPU accelerated crossfiltering.
 * See [github](https://github.com/rapidsai/cuxfilter)
