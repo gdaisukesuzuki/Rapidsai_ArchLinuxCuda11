@@ -1,0 +1,19 @@
+*** cuspatial/cpp/src/spatial/polygon_bounding_box.cu-dist	2020-08-17 18:59:18.776180680 +0900
+--- cuspatial/cpp/src/spatial/polygon_bounding_box.cu	2020-08-17 18:59:45.982748481 +0900
+***************
+*** 87,93 ****
+                             point_ids.begin(),
+                             thrust::maximum<int32_t>());
+  
+!     return std::move(point_ids);
+    }();
+  
+    auto type = cudf::data_type{cudf::type_to_id<T>()};
+--- 87,93 ----
+                             point_ids.begin(),
+                             thrust::maximum<int32_t>());
+  
+!     return point_ids;
+    }();
+  
+    auto type = cudf::data_type{cudf::type_to_id<T>()};
