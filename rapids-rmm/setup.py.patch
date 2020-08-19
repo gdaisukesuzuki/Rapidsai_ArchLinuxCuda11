@@ -1,19 +1,56 @@
-*** rmm/python/setup.py-dist	2020-07-02 10:09:54.066047991 +0900
---- rmm/python/setup.py	2020-07-02 10:11:46.763432756 +0900
+*** rmm/python/setup.py-dist	2020-08-19 01:24:15.855025351 +0900
+--- rmm/python/setup.py	2020-08-19 01:26:51.799679724 +0900
 ***************
-*** 54,60 ****
-              sources=cython_lib,
+*** 94,105 ****
+              "*",
+              sources=["rmm/_lib/*.pyx"],
               include_dirs=include_dirs,
-              library_dirs=library_dirs,
-!             libraries=["rmm"],
+!             library_dirs=library_dirs,
+              runtime_library_dirs=[
+                  cuda_lib_dir,
+                  os.path.join(os.sys.prefix, "lib"),
+              ],
+!             libraries=["cuda", "rmm"],
               language="c++",
               extra_compile_args=["-std=c++14"],
           )
---- 54,60 ----
-              sources=cython_lib,
+--- 94,105 ----
+              "*",
+              sources=["rmm/_lib/*.pyx"],
               include_dirs=include_dirs,
-              library_dirs=library_dirs,
-!             libraries=["rmm","fmt","cudart","nccl"],
+!             library_dirs=library_dirs.append(cuda_lib_dir),
+              runtime_library_dirs=[
+                  cuda_lib_dir,
+                  os.path.join(os.sys.prefix, "lib"),
+              ],
+!             libraries=["cuda", "rmm", "fmt", "cudart"],
+              language="c++",
+              extra_compile_args=["-std=c++14"],
+          )
+***************
+*** 118,129 ****
+              "*",
+              sources=["rmm/_cuda/*.pyx"],
+              include_dirs=include_dirs,
+!             library_dirs=library_dirs,
+              runtime_library_dirs=[
+                  cuda_lib_dir,
+                  os.path.join(os.sys.prefix, "lib"),
+              ],
+!             libraries=["cuda", "rmm"],
+              language="c++",
+              extra_compile_args=["-std=c++14"],
+          )
+--- 118,129 ----
+              "*",
+              sources=["rmm/_cuda/*.pyx"],
+              include_dirs=include_dirs,
+!             library_dirs=library_dirs.append(cuda_lib_dir),
+              runtime_library_dirs=[
+                  cuda_lib_dir,
+                  os.path.join(os.sys.prefix, "lib"),
+              ],
+!             libraries=["cuda", "rmm", "fmt", "cudart"],
               language="c++",
               extra_compile_args=["-std=c++14"],
           )
