@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cudf)
 _pkgname=cudf
-pkgver=0.16.0a.r917.gfac7c28d5c
+pkgver=0.16.0a.r960.g1a3b3f217b
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
@@ -17,7 +17,7 @@ makedepends=('python-cmake_setuptools')
 # makedepends=('python-cmake_setuptools' 'protobuf-static')
 # depends=('arrow-cudf<0.16.0' 'gcc8' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git"
-source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git#branch=branch-0.16"
+source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git"
   "cudf_setup.py.patch")
 #  "from.arrow.cu.patch"
 #  "cudf_setup.py.patch" "gather.cu.patch" "ipc.cpp.patch" "reader_impl.cu.patch")
@@ -101,8 +101,8 @@ build() {
   cd "${srcdir}"/cudf/python/cudf
   PARALLEL_LEVEL=6 python setup.py build_ext  --inplace  --library-dir="${srcdir}"/cudf/cpp/build --verbose
 
-  cd "${srcdir}"/cudf/python/dask_cudf
-  python setup.py build_ext --inplace
+#  cd "${srcdir}"/cudf/python/dask_cudf
+#  python setup.py build_ext --inplace
 
 
 }
@@ -125,8 +125,8 @@ package_rapids-cudf() {
   cd "${srcdir}"/cudf/python/cudf
   python setup.py install --single-version-externally-managed --prefix=/usr --root="${pkgdir}" --optimize=1
 
-  cd "${srcdir}"/cudf/python/dask_cudf
-  python setup.py install --single-version-externally-managed --prefix=/usr --root="${pkgdir}" --optimize=1
+#  cd "${srcdir}"/cudf/python/dask_cudf
+#  python setup.py install --single-version-externally-managed --prefix=/usr --root="${pkgdir}" --optimize=1
 
   # install -Dm644 ${srcdir}/cudf/cpp/src/utilities/legacy/*.hpp ${pkgdir}/usr/include/cudf/utilities/legacy/
   install -Dm644 ${srcdir}/cudf/LICENSE ${pkgdir}/usr/share/licenses/rapids-cudf/LICENSE
