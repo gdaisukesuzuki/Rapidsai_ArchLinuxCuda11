@@ -78,6 +78,7 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 ```
 * RAPIDS Memory Manager provided by  Rapids.
 * See [github](https://github.com/rapidsai/rmm)
+* amend PKGBUILD and setup.py.patch to avoid missing libraries (cudart fmt...) (2020.8.21. 2300GMT)
 ```
 
 9  [cuDF](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cudf/PKGBUILD)
