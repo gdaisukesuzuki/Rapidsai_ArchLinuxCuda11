@@ -84,7 +84,7 @@ package_rapids-rmm() {
   make DESTDIR="${pkgdir}" install
   cd "${srcdir}"/rmm/python
   export LD_LIBRARY_PATH=/opt/cuda/lib64:${srcdir}/rmm/build:$LD_LIBRARY_PATH
-  python setup.py install --prefix=/usr --root="${pkgdir}"  --optimize=1  # --skip-build
+  python setup.py install --prefix=/usr --root="${pkgdir}"  --optimize=1   --skip-build
 #  cp rmm/_lib/*.pxd ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_lib/
 #  cp rmm/_cuda/*.pxd ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_cuda/
 
