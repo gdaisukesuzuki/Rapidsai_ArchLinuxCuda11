@@ -5,7 +5,7 @@
 
 pkgname=(rapids-rmm)
 _pkgname=rmm
-pkgver=0.16.0a.r238.g2d5b6b2
+pkgver=0.16.0a.r238.g178c2cd
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
@@ -14,7 +14,7 @@ license=('custom')
 # depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba')
 depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba' 'spdlog')
 # source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git")
-source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git#branch=branch-0.16"
+source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git"
      "setup.py.patch"
   )
 
@@ -76,14 +76,17 @@ build() {
   export LDFLAGS=-L/opt/cuda/lib64
 
   python setup.py build_ext --inplace --library-dir="${srcdir}/rmm/build"
+  # python setup.py build  --library-dir="${srcdir}/rmm/build"
 }
 
 package_rapids-rmm() {
   cd "${srcdir}"/rmm/build
   make DESTDIR="${pkgdir}" install
   cd "${srcdir}"/rmm/python
-  python setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1 --skip-build
-
+  export LD_LIBRARY_PATH=/opt/cuda/lib64:${srcdir}/rmm/build:$LD_LIBRARY_PATH
+  python setup.py install --prefix=/usr --root="${pkgdir}"  --optimize=1  # --skip-build
+#  cp rmm/_lib/*.pxd ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_lib/
+#  cp rmm/_cuda/*.pxd ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_cuda/
 
   install -Dm644 ${srcdir}/rmm/LICENSE ${pkgdir}/usr/share/licenses/rapids-rmm/LICENSE
 }
