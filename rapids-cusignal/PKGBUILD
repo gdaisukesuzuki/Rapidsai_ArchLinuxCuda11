@@ -3,41 +3,35 @@
 # Contributor: pingplug <pingplug@foxmail.com>
 # Contributor: cornholio <vigo.the.unholy.carpathian@gmail.com>
 
-pkgname=(rapids-cugraph)
-_pkgname=cugraph
-# _pkgname2=hornet
-pkgver=0.16.0a.r271.g83bc2b74
+pkgname=(rapids-cuspatial)
+_pkgname=cuspatial
+pkgver=0.16.0a.r80.gcd077b0
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
-depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser' 'python-ucx')
-# depends=('clang' 'rapids-cudf' 'gcc8' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser-static')
-# depends=('clang' 'rapids-cudf' 'gcc8' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser-static' 'hortnet')
-# depends=('clang' 'rapids-cudf' 'gcc8' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser-static' 'gunrock-static')
-# source=("${_pkgname}::git+https://github.com/rapidsai/cugraph.git"
-source=("${_pkgname}::git+https://github.com/rapidsai/cugraph.git#branch=branch-0.16"
-  "CMakeLists.txt.patch" # "error_utils.h.patch" "renumber.cuh.patch"
-  "setup.py.patch"
-#  "cusparse_helper.cu.patch"
-#  "https://raw.githubusercontent.com/hornet-gt/hornet/master/hornet/include/Hornet.hpp"
-  )
-#  "${_pkgname2}::git+https://github.com/hornet-gt/hornet.git#tag=0.5")
+depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'python-cupy' 'gdal' 'python-gdal')
+# makedepends=('protobuf-static')
+# optional=('openucx')
+source=("${_pkgname}::git+https://github.com/rapidsai/cuspatial.git#branch=branch-0.16"
+#         "${_pkgname2}::git+https://github.com/rapidsai/cudf.git"
+ polygon_bounding_box.cu.patch)
 
-# sha256sums=( 'SKIP')
-# sha256sums=('SKIP' 'SKIP')
-sha256sums=('SKIP' 'SKIP' 'SKIP')
+#  "setup.py.patch" )
+
+# sha256sums=('SKIP')
+sha256sums=('SKIP' 'SKIP')
+# sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
-    cd cugraph
+    cd cuspatial
 
     local _version
     local _revision
     local _shorthash
 
     _version="$(git tag | sort -Vr | head -n1 | sed 's/^v//')"
-
     _revision="$(git rev-list v"${_version}"..HEAD --count)"
     _shorthash="$(git rev-parse --short HEAD)"
 
@@ -47,18 +41,16 @@ pkgver() {
 
 build() {
   cd "${srcdir}"
-  patch -p0 < CMakeLists.txt.patch
-#  patch -p0 < cusparse_helper.cu.patch
-#  patch -p0 < error_utils.h.patch
-#  patch -p0 < renumber.cuh.patch
-  patch -p0 < setup.py.patch
-  cd "${srcdir}/cugraph"
-  git submodule update --init --remote --recursive
+  # patch -p0 < setup.py.patch
+  patch -p0 < polygon_bounding_box.cu.patch
+  cd "${srcdir}/cuspatial"
+#  git submodule update --init --remote --recursive
+  git submodule sync --recursive && git submodule update --init --recursive
+  # find cpp -name '*.cu' | xargs fgrep -l "utilities/legacy" | xargs sed -i -e 's/utilities\/legacy\/cuda_utils/cudf\/utilities\/legacy\/cuda_utils/g'
+  # find cpp -name '*.cu' | xargs fgrep -l "utilities/legacy" | xargs sed -i -e 's/utilities\/legacy\/error_utils/cudf\/utilities\/legacy\/error_utils/g'
+  # find cpp -name '*.cu' | xargs fgrep -l "utilities/legacy" | xargs sed -i -e 's/utilities\/legacy\/column_utils/cudf\/utilities\/legacy\/column_utils/g'
 
-#  cd "${srcdir}"/cugraph/cpp/src/ktruss
-  cd "${srcdir}"/cugraph/cpp/include/
-#  ln -fs "${srcdir}"/Hornet.hpp .
-  cd "${srcdir}/cugraph"
+
   cd cpp
   mkdir -p build
   cd build
@@ -66,57 +58,63 @@ build() {
   export CXX=/usr/bin/g++-9
   export CUDAHOSTCXX=/usr/bin/g++-9
 
+
   export CUDA_HOME=/opt/cuda
   export CUDA_BIN_PATH=$CUDA_HOME
-  export GPU_ARCHS=75
+  export CUSPATIAL_HOME=${srcdir}/cuspacial
+  export CUDF_HOME=${srcdir}/cuspacial
+
    #  -DPARALLEL_LEVEL=6 \
    # -DENABLE_PROTOBUF=ON \
+   # -DCMAKE_CXX_FLAGS="-march=skylake -O3" \
   cmake .. \
-    -DCMAKE_CXX_FLAGS="-march=skylake -O3" \
-           -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-9 \
-       -DCMAKE_CXX_COMPILER=/usr/bin/g++-9 \
-       -DCMAKE_C_COMPILER=/usr/bin/gcc-9 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_CUSPATIAL_C_LIBRARY=ON \
     -DGPU_ARCHS=75 \
-    -DWITH_UCX=ON \
     -DCMAKE_CXX11_ABI=ON \
-                 -DGUNROCK_BUILD_SHARED_LIBS=ON \
-                -DGUNROCK_BUILD_TESTS=OFF
-
-     make  -j6 VERBOSE=1
-    # sed -i -e 's/-lpthread -ldl/-lprotobuf -ldl/g' ./CMakeFiles/cugraph++.dir/link.txt
-  #  make  VERBOSE=1
-  # PARALLEL_LEVEL=4 ./build.sh libcugraph -n
+    -DNVTX=OFF \
+    -DBUILD_CUSPATIAL_TESTS=ON \
+    -DBUILD_CUSPATIAL_MG_TESTS=OFF \
+    -DBUILD_PRIMS_TESTS=OFF \
+    -DBUILD_CUSPATIAL_EXAMPLES=OFF \
+    -DBUILD_CUSPATIAL_BENCH=OFF \
+    -DBUILD_CUSPATIAL_PRIMS_BENCH=OFF \
+    -DBUILD_CUSPATIAL_STD_COMMS=OFF \
+    -DBUILD_CUSPATIAL_MPI_COMMS=OFF 
+    # -DProtobuf_LIBRARY=/usr/lib/libprotobuf.so 
+    # -DWITH_UCX=OFF \
+    # make -j6
+    # sed -i -e 's/-lpthread -ldl/-lprotobuf -ldl/g' ./CMakeFiles/cuspatial++.dir/link.txt
+    make -j6 VERBOSE=1
 
     export LD_LIBRARY_PATH=/usr/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:/opt/magma/lib
     export CUDA_PATH=/opt/cuda
     export CUDA_HOME=/opt/cuda
 
     export PATH=/opt/cuda:$PATH
-    export CFLAGS='-march=skylake -mtune=native -O3 -pipe -fstack-protector -I/opt/cuda/include'
+    # export CFLAGS='-march=skylake -mtune=native -O3 -pipe -fstack-protector -I/opt/cuda/include'
     export NVCC='/opt/cuda/bin/nvcc'
     export CUB_PATH=/usr
     export LDFLAGS=-L/opt/cuda/lib64
 
-    cd "${srcdir}"/cugraph/python
+    cd "${srcdir}"/cuspatial/python/cuspatial
 
-    PARALLEL=6 python setup.py build_ext --inplace --verbose --library-dir="${srcdir}"/cugraph/cpp/build
+    python setup.py build_ext -j6 --inplace --library-dir="${srcdir}"/cuspatial/cpp/build --verbose
 
 
 }
 
-package_rapids-cugraph() {
-  cd "${srcdir}"/cugraph/cpp/build
+package_rapids-cuspatial() {
+  cd "${srcdir}"/cuspatial/cpp/build
 
   make DESTDIR="${pkgdir}" install
 
-  cd "${srcdir}"/cugraph/python
-  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1
+  cd "${srcdir}"/cuspatial/python/cuspatial
+  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1 
 
-  install -Dm644 ${srcdir}/cugraph/LICENSE ${pkgdir}/usr/share/licenses/rapids-cugraph/LICENSE
-  rm -rf ${pkgdir}/home
+  install -Dm644 ${srcdir}/cuspatial/LICENSE ${pkgdir}/usr/share/licenses/rapids-cuspatial/LICENSE
 }
 
 # vim:set ts=2 sw=2 et:
