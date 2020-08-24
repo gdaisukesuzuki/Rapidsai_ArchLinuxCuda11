@@ -6,14 +6,14 @@
 pkgname=(python-ucx)
 _pkgname=ucx-py
 # _pkgname2=hornet
-pkgver=0.16.0a.r56.gad32206
+pkgver=0.16.0a.r85.g5652cb3
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
 depends=('openucx' 'python-numpy' 'python-psutil' 'gcc9')
-source=("${_pkgname}::git+https://github.com/rapidsai/ucx-py.git#branch=branch-0.15"
+source=("${_pkgname}::git+https://github.com/rapidsai/ucx-py.git#branch=branch-0.16"
   # "CMakeLists.txt.patch" # "error_utils.h.patch" "renumber.cuh.patch"
   # "setup.py.patch"
 #  "https://raw.githubusercontent.com/hornet-gt/hornet/master/hornet/include/Hornet.hpp"
@@ -78,7 +78,7 @@ build() {
 package() {
 
   cd "${srcdir}"/ucx-py
-  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1
+  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1  # --skip-build
 
   install -Dm644 ${srcdir}/ucx-py/LICENSE ${pkgdir}/usr/share/licenses/python-ucx/LICENSE
   rm -rf ${pkgdir}/home
