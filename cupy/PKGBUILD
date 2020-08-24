@@ -3,7 +3,7 @@
 
 pkgname=python-cupy
 _pkgname=cupy
-pkgver=8.0.0b5.r283.gedad3ab7b
+pkgver=8.0.0b5.r496.g2a34cc07c
 _pkgver=7.4.0
 pkgrel=1
 pkgdesc='NumPy-like API accelerated with CUDA'
