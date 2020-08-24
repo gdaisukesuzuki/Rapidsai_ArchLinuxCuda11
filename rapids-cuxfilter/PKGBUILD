@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cuxfilter)
 _pkgname=cuxfilter
-pkgver=0.16.0a.r22.g1445f1b
+pkgver=0.16.0a.r58.gea63bdb
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
@@ -13,7 +13,7 @@ url="https://rapids.ai/"
 license=('custom')
 depends=('rapids-cudf' 'python-pydeck')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cuxfilter.git")
-source=("${_pkgname}::git+https://github.com/rapidsai/cuxfilter.git#branch=branch-0.15")
+source=("${_pkgname}::git+https://github.com/rapidsai/cuxfilter.git#branch=branch-0.16")
 
 sha256sums=('SKIP')
 # sha256sums=('SKIP' 'SKIP')
