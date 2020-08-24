@@ -5,7 +5,7 @@
 
 pkgname=(rapids-rmm)
 _pkgname=rmm
-pkgver=0.16.0a.r238.g178c2cd
+pkgver=0.16.0a.r261.gd424485
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
@@ -14,7 +14,7 @@ license=('custom')
 # depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba')
 depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba' 'spdlog')
 # source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git")
-source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git"
+source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git#branch=branch-0.16"
      "setup.py.patch"
   )
 
