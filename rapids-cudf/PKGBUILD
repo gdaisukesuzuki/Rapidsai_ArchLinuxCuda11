@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cudf)
 _pkgname=cudf
-pkgver=0.16.0a.r960.g1a3b3f217b
+pkgver=0.16.0a.r1071.g88826eea03
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
@@ -17,7 +17,7 @@ makedepends=('python-cmake_setuptools')
 # makedepends=('python-cmake_setuptools' 'protobuf-static')
 # depends=('arrow-cudf<0.16.0' 'gcc8' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git"
-source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git"
+source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git#branch=branch-0.16"
   "cudf_setup.py.patch")
 #  "from.arrow.cu.patch"
 #  "cudf_setup.py.patch" "gather.cu.patch" "ipc.cpp.patch" "reader_impl.cu.patch")
