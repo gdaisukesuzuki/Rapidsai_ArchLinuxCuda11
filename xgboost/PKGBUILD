@@ -4,12 +4,12 @@ _name=xgboost
 pkgbase=xgboost
 pkgname=('xgboost'
          'python-xgboost')
-pkgver=1.2.0rc2.r0.g0089a0e6b
+pkgver=1.2.0rc2.r3.g738786680
 pkgrel=1
 url='https://github.com/dmlc/xgboost'
 license=('APACHE')
 #source=('git+https://github.com/dmlc/xgboost.git'
-source=('git+https://github.com/dmlc/xgboost.git#tag=v1.2.0rc2'
+source=('git+https://github.com/dmlc/xgboost.git#tag=v1.2.0'
         'python_no_libs.patch')
 depends=('gcc9' 'cuda' 'openmp')
 makedepends=('python-setuptools')
