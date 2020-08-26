@@ -1,13 +1,40 @@
-*** cuml-dist/python/setup.py	2020-06-14 05:26:55.804710948 +0900
---- cuml/python/setup.py	2020-06-14 05:30:02.375181441 +0900
+*** cuml/python/setup.py-dist	2020-08-26 11:42:52.137721222 +0900
+--- cuml/python/setup.py	2020-08-26 11:44:03.056455029 +0900
 ***************
-*** 124,129 ****
---- 124,131 ----
-  # cumlcomms and nccl are still needed for multigpu algos not based
+*** 121,126 ****
+--- 121,127 ----
   # on libcumlprims
   libs = ['cuda',
-+         'cudart',
-+         'nccl',
           'cuml++',
++         'cudart',
           'rmm']
   
+  include_dirs = ['../cpp/src',
+***************
+*** 148,158 ****
+      cython_exc_list = cython_exc_list + glob.glob('cuml/*/*_mg.pxd')
+      cython_exc_list.append('cuml/nccl/nccl.pyx')
+      cython_exc_list.append('cuml/dask/common/comms_utils.pyx')
+  
+      print('--singlegpu: excluding the following Cython components:')
+      pprint(cython_exc_list)
+  
+!     python_exc_list = ["*.dask", "*.dask.*"]
+  else:
+      libs.append('cumlprims')
+      libs.append('cumlcomms')
+--- 149,162 ----
+      cython_exc_list = cython_exc_list + glob.glob('cuml/*/*_mg.pxd')
+      cython_exc_list.append('cuml/nccl/nccl.pyx')
+      cython_exc_list.append('cuml/dask/common/comms_utils.pyx')
++     cython_exc_list.append('cuml/raft/dask/common/comms_utils.pyx')
++     cython_exc_list.append('cuml/raft/dask/common/nccl.pyx')
++ 
+  
+      print('--singlegpu: excluding the following Cython components:')
+      pprint(cython_exc_list)
+  
+!     python_exc_list = ["*.dask", "*.dask.*", "*.*.dask", "*.*.dask.*"]
+  else:
+      libs.append('cumlprims')
+      libs.append('cumlcomms')

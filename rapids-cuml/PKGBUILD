@@ -5,13 +5,13 @@
 
 pkgname=(rapids-cuml)
 _pkgname=cuml
-pkgver=0.16.0a.r485.gcb24f316d
+pkgver=0.16.0a.r520.gb83688caa
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
-depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake' 'nccl' 'zlib' 'blas' 'python' 'cython' 'python-cupy' 'protobuf' 'python-treelite')
+depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake'  'zlib' 'blas' 'python' 'cython' 'python-cupy' 'protobuf' 'python-treelite')
 # makedepends=('protobuf-static')
 optional=('openucx')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cuml.git"
@@ -101,8 +101,8 @@ build() {
     -DENABLE_CUMLPRIMS_MG=OFF \
     -DBUILD_STATIC_FAISS=ON \
     -DDISABLE_CUMLPRIMS_MG=ON \
-    -DNCCL_PATH=/usr \
     -DPROTOBUF_LIBRARY=/usr/lib/libprotobuf.so 
+    # -DNCCL_PATH=/usr \
     # -DWITH_UCX=OFF 
     # make -j6
 
@@ -141,7 +141,7 @@ build() {
     cd "${srcdir}"/cuml/python
 
     python setup.py clean
-    python setup.py build_ext -j6 --inplace --library-dir="${srcdir}"/cudf/cpp/build  --singlegpu --verbose 
+    python setup.py build_ext -j6 --inplace --library-dir="${srcdir}"/cudf/cpp/build   --singlegpu --verbose 
 
 
 }
@@ -153,7 +153,7 @@ package_rapids-cuml() {
   rm -rf "${pkgdir}"/home
 
   cd "${srcdir}"/cuml/python
-  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1 --singlegpu 
+  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1  --singlegpu 
 
   install -Dm644 ${srcdir}/cuml/LICENSE ${pkgdir}/usr/share/licenses/rapids-cuml/LICENSE
 }
