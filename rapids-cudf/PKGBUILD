@@ -5,13 +5,14 @@
 
 pkgname=(rapids-cudf)
 _pkgname=cudf
-pkgver=0.16.0a.r1071.g88826eea03
+pkgver=0.16.0a.r1083.g0103ee2581
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
-depends=('arrow-cuda<1.0.0' 'python-pyarrow-cuda' 'gcc9' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs' 'python-dask'  'python-distributed' 'protobuf' 'python-versioneer')
+depends=('arrow-cuda<1.0.0' 'python-pyarrow-cuda' 'gcc9' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs'  'protobuf' 'python-versioneer')
+# depends=('arrow-cuda<1.0.0' 'python-pyarrow-cuda' 'gcc9' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs' 'python-dask'  'python-distributed' 'protobuf' 'python-versioneer')
 # depends=('arrow-cudf<0.16.0' 'gcc8' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs' 'python-dask'  'python-distributed' 'protobuf')
 makedepends=('python-cmake_setuptools')
 # makedepends=('python-cmake_setuptools' 'protobuf-static')
