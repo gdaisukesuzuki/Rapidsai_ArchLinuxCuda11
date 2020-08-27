@@ -104,19 +104,26 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 * See [github](https://github.com/rapidsai/cusignal)
 ```
 
-12. [rapids-cuSpatial](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cuspatial/PKGBUILD)
+12. [gdal, python-gdal](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/gdal/PKGBUILD)
+
+```
+* a bug-fix patch required to build gdal under poppler upgraded to 20.08.1
+```
+
+
+13. [rapids-cuSpatial](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cuspatial/PKGBUILD)
 ```
 * a library for handling spatial and trajectory data.
+* gdal and python-gdal are needed
 * See [github](https://github.com/rapidsai/cuspatial)
 ```
 
-13. [rapids-cuGraph](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cugraph/PKGBUILD)
+14. [rapids-cuGraph](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cugraph/PKGBUILD)
 ```
-* a collection of GPU accelerated graph algorithms.
-* See [github](https://github.com/rapidsai/cusgraph)
+* Sorry, it cannot be built without NCCL for now.
 ```
 
-14. [rapids-cuxfilter](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/rapids-cuxfilter/PKGBUILD)
+15. [rapids-cuxfilter](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/rapids-cuxfilter/PKGBUILD)
 ```
 * cuxfilter ( ku-cross-filter ) is a RAPIDS framework to connect web visualizations to GPU accelerated crossfiltering.
 * See [github](https://github.com/rapidsai/cuxfilter)
