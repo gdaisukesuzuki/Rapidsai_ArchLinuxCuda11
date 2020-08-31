@@ -1,5 +1,5 @@
-# Rapidsai_ArchLinuxCuda11
-PKGBUILD's for building rapidsai (cuML/cuDF) on Arch Linux + CUDA11
+# How to BUild NVIDIA's RAPIDS on Arch Linux on CUDA11
+PKGBUILD's for building NVIDIA's RAPIDS (cuML/cuDF) on Arch Linux + CUDA11
 a  procedure of building NVIDIA's [RAPIDS](https://rapids.ai/) under Arch Linux with CUDA environment on  '''Single Nvidia's GPU'''.
 
 ## Prerequisites
