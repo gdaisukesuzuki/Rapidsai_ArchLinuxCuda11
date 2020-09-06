@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cudf)
 _pkgname=cudf
-pkgver=0.16.0a.r1083.g0103ee2581
+pkgver=0.16.0a.r1505.g19237a09fe
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
@@ -79,7 +79,7 @@ build() {
 
 
   cd "${srcdir}"/cudf/cpp/build
-#    sed -i -e 's/\/lib\/libarrow_cuda.so/\/lib\/libarrow_cuda.so \/lib\/libplasma.so \/lib\/libparquet.so \/lib\/libarrow_flight.so \/lib\/libarrow_dataset.so \/lib\/libarrow_python.so \/lib\/libarrow_python_flight.so/g' ./CMakeFiles/cudf.dir/link.txt
+  sed -i -e 's/\/lib\/libarrow_cuda.so/\/lib\/libarrow_cuda.so -lfmt/g' ./CMakeFiles/cudf.dir/link.txt
 
 
   make -j9 cudf VERBOSE=1 
