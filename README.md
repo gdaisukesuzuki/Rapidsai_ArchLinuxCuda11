@@ -74,6 +74,11 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 * See [github](https://github.com/dmlc/treelite)
 ```
 
+7.5 [spdlog](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/spdlog/PKGBUILD)
+```
+* Modified to clain that FMT EXTERNAL used. 
+```
+
 8  [RMM](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-rmm/PKGBUILD)
 ```
 * RAPIDS Memory Manager provided by  Rapids.
@@ -97,6 +102,7 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 ```
 * required for building cuGraph
 ```
+
 
 11.  [cuSignal](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cusignal/PKGBUILD)
 ```
