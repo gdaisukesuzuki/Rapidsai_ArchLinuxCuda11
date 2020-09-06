@@ -6,7 +6,7 @@
   # on libcumlprims
   libs = ['cuda',
           'cuml++',
-+         'cudart',
++         'cudart','fmt',
           'rmm']
   
   include_dirs = ['../cpp/src',

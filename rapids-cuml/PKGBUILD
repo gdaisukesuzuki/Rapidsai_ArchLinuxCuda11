@@ -5,12 +5,13 @@
 
 pkgname=(rapids-cuml)
 _pkgname=cuml
-pkgver=0.16.0a.r520.gb83688caa
+pkgver=0.16.0a.r645.g3a8fc4ecf
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
+# depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake'  'zlib' 'blas' 'python' 'cython' 'python-cupy' 'protobuf')
 depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake'  'zlib' 'blas' 'python' 'cython' 'python-cupy' 'protobuf' 'python-treelite')
 # makedepends=('protobuf-static')
 optional=('openucx')
