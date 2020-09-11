@@ -1,40 +1,76 @@
-*** cuml/python/setup.py-dist	2020-08-26 11:42:52.137721222 +0900
---- cuml/python/setup.py	2020-08-26 11:44:03.056455029 +0900
+*** cuml/python/setup.py-dist	2020-09-11 23:19:37.792594124 +0900
+--- cuml/python/setup.py	2020-09-11 23:22:30.050716405 +0900
 ***************
-*** 121,126 ****
---- 121,127 ----
-  # on libcumlprims
-  libs = ['cuda',
-          'cuml++',
-+         'cudart','fmt',
-          'rmm']
+*** 147,159 ****
   
-  include_dirs = ['../cpp/src',
+      def initialize_options(self):
+  
+!         self.singlegpu = False
+  
+          super().initialize_options()
+  
+      def finalize_options(self):
+  
+!         libs = ['cuda', 'cuml++', 'rmm']
+  
+          include_dirs = [
+              '../cpp/src',
+--- 147,159 ----
+  
+      def initialize_options(self):
+  
+!         self.singlegpu = True
+  
+          super().initialize_options()
+  
+      def finalize_options(self):
+  
+!         libs = ['cuda', 'cuml++', 'rmm', 'cudart', 'fmt']
+  
+          include_dirs = [
+              '../cpp/src',
 ***************
-*** 148,158 ****
-      cython_exc_list = cython_exc_list + glob.glob('cuml/*/*_mg.pxd')
-      cython_exc_list.append('cuml/nccl/nccl.pyx')
-      cython_exc_list.append('cuml/dask/common/comms_utils.pyx')
+*** 170,176 ****
+          python_exc_list = []
   
-      print('--singlegpu: excluding the following Cython components:')
-      pprint(cython_exc_list)
+          if (self.singlegpu):
+!             python_exc_list = ["*.dask", "*.dask.*"]
+          else:
+              libs.append('cumlprims')
+              libs.append('cumlcomms')
+--- 170,176 ----
+          python_exc_list = []
   
-!     python_exc_list = ["*.dask", "*.dask.*"]
-  else:
-      libs.append('cumlprims')
-      libs.append('cumlcomms')
---- 149,162 ----
-      cython_exc_list = cython_exc_list + glob.glob('cuml/*/*_mg.pxd')
-      cython_exc_list.append('cuml/nccl/nccl.pyx')
-      cython_exc_list.append('cuml/dask/common/comms_utils.pyx')
-+     cython_exc_list.append('cuml/raft/dask/common/comms_utils.pyx')
-+     cython_exc_list.append('cuml/raft/dask/common/nccl.pyx')
-+ 
+          if (self.singlegpu):
+!             python_exc_list = ["*.dask", "*.dask.*",  "*.*.dask", "*.*.dask.*", "*.dask.*.*","*.*.dask.*.*"]
+          else:
+              libs.append('cumlprims')
+              libs.append('cumlcomms')
+***************
+*** 213,219 ****
   
-      print('--singlegpu: excluding the following Cython components:')
-      pprint(cython_exc_list)
+      def initialize_options(self):
   
-!     python_exc_list = ["*.dask", "*.dask.*", "*.*.dask", "*.*.dask.*"]
-  else:
-      libs.append('cumlprims')
-      libs.append('cumlcomms')
+!         self.singlegpu = None
+  
+          super().initialize_options()
+  
+--- 213,219 ----
+  
+      def initialize_options(self):
+  
+!         self.singlegpu = True
+  
+          super().initialize_options()
+  
+***************
+*** 232,237 ****
+--- 232,239 ----
+              cython_exc_list = cython_exc_list + glob.glob('cuml/*/*_mg.pxd')
+              cython_exc_list.append('cuml/nccl/nccl.pyx')
+              cython_exc_list.append('cuml/dask/common/comms_utils.pyx')
++             cython_exc_list.append('cuml/raft/dask/common/comms_utils.pyx')
++             cython_exc_list.append('cuml/raft/dask/common/nccl.pyx')
+  
+              print('--singlegpu: excluding the following Cython components:')
+              pprint(cython_exc_list)

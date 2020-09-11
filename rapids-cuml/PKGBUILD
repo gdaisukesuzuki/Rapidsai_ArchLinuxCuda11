@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cuml)
 _pkgname=cuml
-pkgver=0.16.0a.r645.g3a8fc4ecf
+pkgver=0.16.0a.r670.gd84283e32
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
@@ -90,7 +90,7 @@ build() {
     -DBUILD_CUML_STD_COMMS=OFF \
      -DBUILD_CUML_MPI_COMMS=OFF \
      -DBUILD_CUML_MG_TESTS=OFF \
-    -DWITH_UCX=ON \
+    -DWITH_UCX=OFF \
     -DBUILD_CUML_MPI_COMMS=OFF \
     -DBUILD_CUML_MG_TESTS=OFF \
     -DBUILD_PRIMS_TESTS=OFF \
@@ -142,7 +142,7 @@ build() {
     cd "${srcdir}"/cuml/python
 
     python setup.py clean
-    python setup.py build_ext -j6 --inplace --library-dir="${srcdir}"/cudf/cpp/build   --singlegpu --verbose 
+    python setup.py build_ext -j6 --inplace --library-dir="${srcdir}"/cudf/cpp/build   --singlegpu --verbose
 
 
 }
@@ -154,7 +154,7 @@ package_rapids-cuml() {
   rm -rf "${pkgdir}"/home
 
   cd "${srcdir}"/cuml/python
-  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1  --singlegpu 
+  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1
 
   install -Dm644 ${srcdir}/cuml/LICENSE ${pkgdir}/usr/share/licenses/rapids-cuml/LICENSE
 }
