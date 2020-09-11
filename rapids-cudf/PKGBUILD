@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cudf)
 _pkgname=cudf
-pkgver=0.16.0a.r1505.g19237a09fe
+pkgver=0.16.0a.r1681.g4600ae81f1
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
@@ -44,7 +44,7 @@ prepare() {
   cd "${srcdir}"
 #   patch -p0 < nvst_CMakeLists.txt.patch
 #   patch -p0 < gather.cu.patch 
-   patch -p0 < cudf_setup.py.patch
+  patch -p0 < cudf_setup.py.patch
 #   patch -p0 < reader_impl.cu.patch
 #   patch -p0 <  from.arrow.cu.patch
 #    patch -p0 < ipc.cpp.patch
@@ -95,7 +95,6 @@ build() {
 
   # cd "${srcdir}"
   # patch -p0 < nvst_CMakeLists.txt
-  # patch -p0 < cudf_setup.py.patch
 
   # cd "${srcdir}"/cudf/python/nvstrings
   # python setup.py build_ext  --build-lib=${PWD}  --library-dir="${srcdir}"/cudf/cpp/build --verbose
