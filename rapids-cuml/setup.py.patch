@@ -1,36 +1,41 @@
-*** cuml/python/setup.py-dist	2020-09-11 23:19:37.792594124 +0900
---- cuml/python/setup.py	2020-09-11 23:22:30.050716405 +0900
+*** cuml/python/setup.py-dist	2020-09-15 08:18:18.455898519 +0900
+--- cuml/python/setup.py	2020-09-15 08:25:41.099376136 +0900
 ***************
-*** 147,159 ****
+*** 141,147 ****
   
       def initialize_options(self):
   
 !         self.singlegpu = False
-  
           super().initialize_options()
   
       def finalize_options(self):
+--- 141,147 ----
+  
+      def initialize_options(self):
+  
+!         self.singlegpu = True
+          super().initialize_options()
+  
+      def finalize_options(self):
+***************
+*** 151,157 ****
+          # object has all the args used by the user, we can check that.
+          self.singlegpu = '--singlegpu' in self.distribution.script_args
   
 !         libs = ['cuda', 'cuml++', 'rmm']
   
           include_dirs = [
               '../cpp/src',
---- 147,159 ----
-  
-      def initialize_options(self):
-  
-!         self.singlegpu = True
-  
-          super().initialize_options()
-  
-      def finalize_options(self):
+--- 151,157 ----
+          # object has all the args used by the user, we can check that.
+          self.singlegpu = '--singlegpu' in self.distribution.script_args
   
 !         libs = ['cuda', 'cuml++', 'rmm', 'cudart', 'fmt']
   
           include_dirs = [
               '../cpp/src',
 ***************
-*** 170,176 ****
+*** 168,174 ****
           python_exc_list = []
   
           if (self.singlegpu):
@@ -38,7 +43,7 @@
           else:
               libs.append('cumlprims')
               libs.append('cumlcomms')
---- 170,176 ----
+--- 168,174 ----
           python_exc_list = []
   
           if (self.singlegpu):
@@ -47,7 +52,7 @@
               libs.append('cumlprims')
               libs.append('cumlcomms')
 ***************
-*** 213,219 ****
+*** 211,217 ****
   
       def initialize_options(self):
   
@@ -55,7 +60,7 @@
   
           super().initialize_options()
   
---- 213,219 ----
+--- 211,217 ----
   
       def initialize_options(self):
   
@@ -64,13 +69,14 @@
           super().initialize_options()
   
 ***************
-*** 232,237 ****
---- 232,239 ----
+*** 230,235 ****
+--- 230,238 ----
               cython_exc_list = cython_exc_list + glob.glob('cuml/*/*_mg.pxd')
               cython_exc_list.append('cuml/nccl/nccl.pyx')
               cython_exc_list.append('cuml/dask/common/comms_utils.pyx')
 +             cython_exc_list.append('cuml/raft/dask/common/comms_utils.pyx')
 +             cython_exc_list.append('cuml/raft/dask/common/nccl.pyx')
++ 
   
               print('--singlegpu: excluding the following Cython components:')
               pprint(cython_exc_list)
