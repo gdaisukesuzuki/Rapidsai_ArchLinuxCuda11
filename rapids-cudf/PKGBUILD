@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cudf)
 _pkgname=cudf
-pkgver=0.16.0a.r1681.g4600ae81f1
+pkgver=0.16.0a.r1862.gf1d99a17f4
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
@@ -19,12 +19,14 @@ makedepends=('python-cmake_setuptools')
 # depends=('arrow-cudf<0.16.0' 'gcc8' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git"
 source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git#branch=branch-0.16"
+  "orc.hpp.patch"
   "cudf_setup.py.patch")
 #  "from.arrow.cu.patch"
 #  "cudf_setup.py.patch" "gather.cu.patch" "ipc.cpp.patch" "reader_impl.cu.patch")
 #  "cudf_setup.py.patch" "nvst_CMakeLists.txt.patch")
 
-sha256sums=('SKIP' 'SKIP')
+# sha256sums=('SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
     cd cudf
@@ -44,6 +46,7 @@ prepare() {
   cd "${srcdir}"
 #   patch -p0 < nvst_CMakeLists.txt.patch
 #   patch -p0 < gather.cu.patch 
+   patch -p0 < orc.hpp.patch 
   patch -p0 < cudf_setup.py.patch
 #   patch -p0 < reader_impl.cu.patch
 #   patch -p0 <  from.arrow.cu.patch
@@ -99,7 +102,7 @@ build() {
   # cd "${srcdir}"/cudf/python/nvstrings
   # python setup.py build_ext  --build-lib=${PWD}  --library-dir="${srcdir}"/cudf/cpp/build --verbose
   cd "${srcdir}"/cudf/python/cudf
-  PARALLEL_LEVEL=6 python setup.py build_ext  --inplace  --library-dir="${srcdir}"/cudf/cpp/build --verbose
+  PARALLEL_LEVEL=9 python setup.py build_ext  --inplace  --library-dir="${srcdir}"/cudf/cpp/build --verbose
 
 #  cd "${srcdir}"/cudf/python/dask_cudf
 #  python setup.py build_ext --inplace

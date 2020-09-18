@@ -1,0 +1,19 @@
+*** cudf/cpp/include/cudf/io/orc.hpp-dist	2020-09-18 23:27:09.101120683 +0900
+--- cudf/cpp/include/cudf/io/orc.hpp	2020-09-18 23:27:22.384417664 +0900
+***************
+*** 22,28 ****
+  #include <cudf/table/table_view.hpp>
+  #include <cudf/types.hpp>
+  
+! #include <rmm/mr/device/default_memory_resource.hpp>
+  
+  #include <memory>
+  #include <string>
+--- 22,28 ----
+  #include <cudf/table/table_view.hpp>
+  #include <cudf/types.hpp>
+  
+! #include <rmm/mr/device/device_memory_resource.hpp>
+  
+  #include <memory>
+  #include <string>
