@@ -5,14 +5,14 @@
 
 pkgname=(rapids-rmm)
 _pkgname=rmm
-pkgver=0.16.0a.r368.ge3c55f7
+pkgver=0.16.0a.r379.gf4de029
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
-# depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba')
-depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba' 'spdlog')
+depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba')
+# depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba' 'spdlog')
 # source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git")
 source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git#branch=branch-0.16"
      "setup.py.patch"
@@ -47,8 +47,9 @@ build() {
 
   mkdir -p build
   cd build
+  #  -DCMAKE_CXX_FLAGS="-march=skylake -O3 -DSPDLOG_FMT_EXTERNAL" \
   cmake .. \
-    -DCMAKE_CXX_FLAGS="-march=skylake -O3 -DSPDLOG_FMT_EXTERNAL" \
+    -DCMAKE_CXX_FLAGS="-march=skylake -O3" \
     -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-9 \
     -DCMAKE_C_COMPILER=/usr/bin/gcc-9 \
     -DCMAKE_CXX_COMPILER=/usr/bin/g++-9 \
@@ -59,7 +60,12 @@ build() {
     -DBUILD_BENCHMARKS=OFF \
     -DCMAKE_CXX11_ABI=ON \
     -DGPU_TARGET="sm_75"
+  make spdlog
   make -j6
+
+  cd "${srcdir}"/rmm/include
+  ln -sf ../build/_deps/cnmam-src/include/cnmem.h .
+  ln -sf ../build/_deps/spdlog-src/include/spdlog .
 
   cd "${srcdir}"
   patch -p0 < setup.py.patch
@@ -82,9 +88,13 @@ build() {
 package_rapids-rmm() {
   cd "${srcdir}"/rmm/build
   make DESTDIR="${pkgdir}" install
+  cd "${srcdir}"/rmm/build/_deps/spdlog-build
+  make DESTDIR="${pkgdir}" install
+  cd "${srcdir}"/rmm/build/_deps/spdlog-src/include
+  cp -pr spdlog ${pkgdir}/usr/include
   cd "${srcdir}"/rmm/python
   export LD_LIBRARY_PATH=/opt/cuda/lib64:${srcdir}/rmm/build:$LD_LIBRARY_PATH
-  python setup.py install --prefix=/usr --root="${pkgdir}"  --optimize=1   --skip-build
+  python setup.py install --prefix=/usr --root="${pkgdir}"  --optimize=1  --skip-build
   cp rmm/*.py ${pkgdir}/usr/lib/python3.8/site-packages/rmm/
   cp rmm/_lib/*.pxd ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_lib/
   cp rmm/_cuda/*.pxd ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_cuda/
