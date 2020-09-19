@@ -29,20 +29,3 @@
   
   #include <thrust/device_vector.h>
   #include <thrust/iterator/transform_iterator.h>
-***************
-*** 289,295 ****
-        select_stream(userStream, internalStreams, n_int_streams, i);
-  
-      gpu_res.noTempMemory();
-!     gpu_res.setCudaMallocWarning(false);
-      gpu_res.setDefaultStream(device, stream);
-  
-      faiss::gpu::GpuDistanceParams args;
---- 289,295 ----
-        select_stream(userStream, internalStreams, n_int_streams, i);
-  
-      gpu_res.noTempMemory();
-!     // gpu_res.setCudaMallocWarning(false);
-      gpu_res.setDefaultStream(device, stream);
-  
-      faiss::gpu::GpuDistanceParams args;

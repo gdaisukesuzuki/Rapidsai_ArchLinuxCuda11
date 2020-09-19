@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cuml)
 _pkgname=cuml
-pkgver=0.16.0a.r691.ga4cc40ad8
+pkgver=0.16.0a.r814.g461cbf2a7
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
@@ -18,16 +18,15 @@ optional=('openucx')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cuml.git"
 source=("${_pkgname}::git+https://github.com/rapidsai/cuml.git#branch=branch-0.16"
   "setup.py.patch"
-  "qn_solvers.cuh.patch"
   "knn.cuh.patch"
 )
+#  "qn_solvers.cuh.patch"
 # sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
   # "setup.py.patch" "treelite_protobuf.patch.new")
   # "setup.py.patch" "treelite_protobuf.patch.patch")
 
 # sha256sums=('SKIP')
-# sha256sums=('SKIP' 'SKIP')
-sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
     cd cuml
@@ -46,9 +45,9 @@ pkgver() {
 
 build() {
   cd "${srcdir}"
-  patch -p0 < setup.py.patch
+ patch -p0 < setup.py.patch
 #  patch -p0 < cusparse_wrappers.h.patch
-  patch -p0 < qn_solvers.cuh.patch
+#  patch -p0 < qn_solvers.cuh.patch
   #patch -p0 < qn_linesearch.cuh.patch
   patch -p0 < knn.cuh.patch
 #  patch -p0 < ml_cuda_utils.h.patch
