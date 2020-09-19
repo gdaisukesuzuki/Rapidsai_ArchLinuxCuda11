@@ -7,7 +7,7 @@ a  procedure of building NVIDIA's [RAPIDS](https://rapids.ai/) under Arch Linux 
 
 ** Intel or AMD's CPU
 
-** NVIDIA's Single GPU which has architecture whose type is Pascal / Volta / Turing / (Ampere?). (eg GeForce / TITAN / Tesla / Quadro)
+** NVIDIA's Single GPU which has architecture whose type is Pascal / Volta / Turing / Ampere. (eg GeForce / TITAN / Tesla / Quadro)
 
 * Software
 
