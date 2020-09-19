@@ -74,10 +74,6 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 * See [github](https://github.com/dmlc/treelite)
 ```
 
-7.5 [spdlog](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/spdlog/PKGBUILD)
-```
-* Modified to clain that FMT EXTERNAL used. 
-```
 
 8  [RMM](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-rmm/PKGBUILD)
 ```
@@ -96,6 +92,7 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 ```
 *  A suite of libraries that implement machine learning algorithms presented by Rapids.
 * See [github](https://github.com/rapidsai/cuml)
+* amend PKGBUILD and setup.py.patch to avoid missing libraries (cublas cusuparse cusolver ...) (2020.9.19. 1400GMT)
 ```
 
 10.  [libcypher-parse](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/libcypher-parser/PKGBUILD)
