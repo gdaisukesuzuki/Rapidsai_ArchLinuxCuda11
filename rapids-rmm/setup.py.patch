@@ -1,5 +1,5 @@
-*** rmm/python/setup.py-dist	2020-08-22 07:15:22.557220674 +0900
---- rmm/python/setup.py	2020-08-22 07:16:56.659398641 +0900
+*** rmm/python/setup.py-dist	2020-09-21 22:04:02.818450662 +0900
+--- rmm/python/setup.py	2020-09-21 22:05:19.288601038 +0900
 ***************
 *** 85,91 ****
       cuda_include_dir,
@@ -22,7 +22,7 @@
                   cuda_lib_dir,
                   os.path.join(os.sys.prefix, "lib"),
               ],
-!             libraries=["cuda", "rmm"],
+!             libraries=["cuda", "cudart"],
               language="c++",
               extra_compile_args=["-std=c++14"],
           )
@@ -30,7 +30,7 @@
                   cuda_lib_dir,
                   os.path.join(os.sys.prefix, "lib"),
               ],
-!             libraries=["cuda", "rmm", "fmt", "cudart"],
+!             libraries=["cuda", "cudart", "fmt", "rmm"],
               language="c++",
               extra_compile_args=["-std=c++14"],
           )
@@ -39,7 +39,7 @@
                   cuda_lib_dir,
                   os.path.join(os.sys.prefix, "lib"),
               ],
-!             libraries=["cuda", "rmm"],
+!             libraries=["cuda", "cudart"],
               language="c++",
               extra_compile_args=["-std=c++14"],
           )
@@ -47,7 +47,7 @@
                   cuda_lib_dir,
                   os.path.join(os.sys.prefix, "lib"),
               ],
-!             libraries=["cuda", "rmm", "fmt", "cudart"],
+!             libraries=["cuda", "cudart", "fmt", "rmm"],
               language="c++",
               extra_compile_args=["-std=c++14"],
           )

@@ -5,7 +5,7 @@
 
 pkgname=(rapids-rmm)
 _pkgname=rmm
-pkgver=0.16.0a.r379.gf4de029
+pkgver=0.16.0a.r381.gf864801
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
@@ -68,7 +68,7 @@ build() {
   ln -sf ../build/_deps/spdlog-src/include/spdlog .
 
   cd "${srcdir}"
-  patch -p0 < setup.py.patch
+  # patch -p0 < setup.py.patch
 
   cd "${srcdir}"/rmm/python
   export LD_LIBRARY_PATH=/usr/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:/opt/magma/lib
