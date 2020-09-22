@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cuml)
 _pkgname=cuml
-pkgver=0.16.0a.r814.g461cbf2a7
+pkgver=0.16.0a.r817.g29245dd32
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
