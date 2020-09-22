@@ -3,30 +3,26 @@
 # Contributor: pingplug <pingplug@foxmail.com>
 # Contributor: cornholio <vigo.the.unholy.carpathian@gmail.com>
 
-pkgname=(rapids-cudf)
-_pkgname=cudf
-pkgver=0.16.0a.r897.g289340e3f8
+pkgname=(rapids-rmm)
+_pkgname=rmm
+pkgver=0.16.0a.r383.gfd3dc48
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
-depends=('arrow-cuda<1.0.0' 'python-pyarrow-cuda' 'gcc9' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs' 'python-dask'  'python-distributed' 'protobuf' 'python-versioneer')
-# depends=('arrow-cudf<0.16.0' 'gcc8' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs' 'python-dask'  'python-distributed' 'protobuf')
-makedepends=('python-cmake_setuptools')
-# makedepends=('python-cmake_setuptools' 'protobuf-static')
-# depends=('arrow-cudf<0.16.0' 'gcc8' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs')
-# source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git"
-source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git#branch=branch-0.16"
-  "cudf_setup.py.patch")
-#  "from.arrow.cu.patch"
-#  "cudf_setup.py.patch" "gather.cu.patch" "ipc.cpp.patch" "reader_impl.cu.patch")
-#  "cudf_setup.py.patch" "nvst_CMakeLists.txt.patch")
+depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba' 'fmt')
+# depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba' 'spdlog')
+# source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git")
+source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git#branch=branch-0.16"
+     "setup.py.patch"
+  )
 
+# sha256sums=('SKIP')
 sha256sums=('SKIP' 'SKIP')
 
 pkgver() {
-    cd cudf
+    cd rmm
 
     local _version
     local _revision
@@ -39,98 +35,76 @@ pkgver() {
     printf '%s.r%s.g%s' "$_version" "$_revision" "$_shorthash"
 }
 
-prepare() {
-  cd "${srcdir}"
-#   patch -p0 < nvst_CMakeLists.txt.patch
-#   patch -p0 < gather.cu.patch 
-   patch -p0 < cudf_setup.py.patch
-#   patch -p0 < reader_impl.cu.patch
-#   patch -p0 <  from.arrow.cu.patch
-#    patch -p0 < ipc.cpp.patch
-}
 
 build() {
-  cd "${srcdir}/cudf"
-#   git submodule update --init --remote --recursive
-  git submodule sync --recursive && git submodule update --init --recursive
+  cd "${srcdir}/rmm"
+  git submodule update --init --remote --recursive
 
-  cd cpp
-  mkdir -p build
-  cd build
   export CC=/usr/bin/gcc-9
   export CXX=/usr/bin/g++-9
   export CUDAHOSTCXX=/usr/bin/g++-9
 
-  #  -DCMAKE_CXX_COMPILER=/usr/bin/g++-9 \
+
+  mkdir -p build
+  cd build
+  #  -DCMAKE_CXX_FLAGS="-march=skylake -O3 -DSPDLOG_FMT_EXTERNAL" \
   cmake .. \
+    -DCMAKE_CXX_FLAGS="-march=skylake -O3" \
     -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-9 \
     -DCMAKE_C_COMPILER=/usr/bin/gcc-9 \
-     -DCMAKE_CXX_FLAGS="-march=skylake -O3" \
+    -DCMAKE_CXX_COMPILER=/usr/bin/g++-9 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_TESTS=OFF \
     -DBUILD_BENCHMARKS=OFF \
-    -DBUILD_LEGACY_TESTS=OFF \
-    -DGPU_ARCHS=75 \
     -DPER_THREAD_DEFAULT_STREAM=ON \
-    -DUSE_NVTX=ON \
-    -DCMAKE_CXX11_ABI=ON
+    -DCMAKE_CXX11_ABI=ON \
+    -DGPU_TARGET="sm_75"
+  make spdlog
+  make -j6 all
 
+  cd "${srcdir}"/rmm/include
+  ln -sf ../build/_deps/cnmam-src/include/cnmem.h .
+  ln -sf ../build/_deps/spdlog-src/include/spdlog .
 
-  cd "${srcdir}"/cudf/cpp/build
-#    sed -i -e 's/\/lib\/libarrow_cuda.so/\/lib\/libarrow_cuda.so \/lib\/libplasma.so \/lib\/libparquet.so \/lib\/libarrow_flight.so \/lib\/libarrow_dataset.so \/lib\/libarrow_python.so \/lib\/libarrow_python_flight.so/g' ./CMakeFiles/cudf.dir/link.txt
+  cd "${srcdir}"
+  patch -p0 < setup.py.patch
 
-
-  make -j9 cudf VERBOSE=1 
-
+  cd "${srcdir}"/rmm/python
   export LD_LIBRARY_PATH=/usr/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:/opt/magma/lib
   export CUDA_PATH=/opt/cuda
   export CUDA_HOME=/opt/cuda
 
   export PATH=/opt/cuda:$PATH
-  export CFLAGS='-march=skylake -mtune=native -O3 -pipe -fstack-protector -I/opt/cuda/include'
+  export CFLAGS='-march=skylake -mtune=native -O3 -pipe -DSPDLOG_FMT_EXTERNAL -fstack-protector -I/opt/cuda/include'
   export NVCC='/opt/cuda/bin/nvcc'
   export CUB_PATH=/usr
+  export LDFLAGS=-L/opt/cuda/lib64
 
-  # cd "${srcdir}"
-  # patch -p0 < nvst_CMakeLists.txt
-  # patch -p0 < cudf_setup.py.patch
-
-  # cd "${srcdir}"/cudf/python/nvstrings
-  # python setup.py build_ext  --build-lib=${PWD}  --library-dir="${srcdir}"/cudf/cpp/build --verbose
-  cd "${srcdir}"/cudf/python/cudf
-  PARALLEL_LEVEL=6 python setup.py build_ext  --inplace  --library-dir="${srcdir}"/cudf/cpp/build --verbose
-
-  cd "${srcdir}"/cudf/python/dask_cudf
-  python setup.py build_ext --inplace
-
-
+  python setup.py build_ext --inplace --library-dir="${srcdir}/rmm/build"
+  # python setup.py build  --library-dir="${srcdir}/rmm/build"
 }
 
-package_rapids-cudf() {
-  cd "${srcdir}"/cudf/cpp/build
+package_rapids-rmm() {
+  cd "${srcdir}"/rmm/build
+  make DESTDIR="${pkgdir}" install
+  cd "${srcdir}"/rmm/build/_deps/spdlog-build
+  make DESTDIR="${pkgdir}" install
+  cd "${srcdir}"/rmm/build/_deps/spdlog-src/include
+  cp -pr spdlog ${pkgdir}/usr/include
+  cd "${srcdir}"/rmm/python
+  export LD_LIBRARY_PATH=/opt/cuda/lib64:${srcdir}/rmm/build:$LD_LIBRARY_PATH
+  python setup.py install --prefix=/usr --root="${pkgdir}"  --optimize=1  --skip-build
+  cp rmm/*.py ${pkgdir}/usr/lib/python3.8/site-packages/rmm/
+  cp rmm/_lib/*.pxd ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_lib/
+  cp rmm/_cuda/*.pxd ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_cuda/
+#  cp rmm/tests/*.pxd ${pkgdir}/usr/lib/python3.8/site-packages/rmm/tests/
+  cp rmm/_cuda/*.py ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_cuda/
+  cp rmm/_lib/*.py ${pkgdir}/usr/lib/python3.8/site-packages/rmm/_lib/
+  cp rmm/tests/*.py ${pkgdir}/usr/lib/python3.8/site-packages/rmm/tests/
 
-  make DESTDIR="${pkgdir}" install_cudf
-
-#  rm ${pkgdir}/usr/include/arrow/gpu/cuda_api.h
-#  rm ${pkgdir}/usr/include/arrow/gpu/cuda_arrow_ipc.h
-#  rm ${pkgdir}/usr/include/arrow/gpu/cuda_common.h
-#  rm ${pkgdir}/usr/include/arrow/gpu/cuda_context.h
-#  rm ${pkgdir}/usr/include/arrow/gpu/cuda_memory.h
-#  rm ${pkgdir}/usr/include/arrow/gpu/cuda_version.h
-
-#  cd "${srcdir}"/cudf/python/nvstrings
-#  python setup.py install --single-version-externally-managed --prefix=/usr --root="${pkgdir}" --optimize=1
-
-  cd "${srcdir}"/cudf/python/cudf
-  python setup.py install --single-version-externally-managed --prefix=/usr --root="${pkgdir}" --optimize=1 --skip-build
-
-  cd "${srcdir}"/cudf/python/dask_cudf
-  python setup.py install --single-version-externally-managed --prefix=/usr --root="${pkgdir}" --optimize=1 --skip-build
-
-  # install -Dm644 ${srcdir}/cudf/cpp/src/utilities/legacy/*.hpp ${pkgdir}/usr/include/cudf/utilities/legacy/
-  install -Dm644 ${srcdir}/cudf/LICENSE ${pkgdir}/usr/share/licenses/rapids-cudf/LICENSE
-
+  install -Dm644 ${srcdir}/rmm/LICENSE ${pkgdir}/usr/share/licenses/rapids-rmm/LICENSE
 }
 
 # vim:set ts=2 sw=2 et:

@@ -1,0 +1,53 @@
+*** rmm/python/setup.py-dist	2020-09-21 22:04:02.818450662 +0900
+--- rmm/python/setup.py	2020-09-21 22:05:19.288601038 +0900
+***************
+*** 85,91 ****
+      cuda_include_dir,
+  ]
+  
+! library_dirs = [get_python_lib(), os.path.join(os.sys.prefix, "lib")]
+  
+  # lib:
+  extensions = cythonize(
+--- 85,91 ----
+      cuda_include_dir,
+  ]
+  
+! library_dirs = [get_python_lib(), os.path.join(os.sys.prefix, "lib"), cuda_lib_dir]
+  
+  # lib:
+  extensions = cythonize(
+***************
+*** 99,105 ****
+                  cuda_lib_dir,
+                  os.path.join(os.sys.prefix, "lib"),
+              ],
+!             libraries=["cuda", "cudart"],
+              language="c++",
+              extra_compile_args=["-std=c++14"],
+          )
+--- 99,105 ----
+                  cuda_lib_dir,
+                  os.path.join(os.sys.prefix, "lib"),
+              ],
+!             libraries=["cuda", "cudart", "fmt"],
+              language="c++",
+              extra_compile_args=["-std=c++14"],
+          )
+***************
+*** 123,129 ****
+                  cuda_lib_dir,
+                  os.path.join(os.sys.prefix, "lib"),
+              ],
+!             libraries=["cuda", "cudart"],
+              language="c++",
+              extra_compile_args=["-std=c++14"],
+          )
+--- 123,129 ----
+                  cuda_lib_dir,
+                  os.path.join(os.sys.prefix, "lib"),
+              ],
+!             libraries=["cuda", "cudart", "fmt"],
+              language="c++",
+              extra_compile_args=["-std=c++14"],
+          )
