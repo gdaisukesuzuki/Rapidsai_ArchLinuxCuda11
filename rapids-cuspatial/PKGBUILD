@@ -3,25 +3,29 @@
 # Contributor: pingplug <pingplug@foxmail.com>
 # Contributor: cornholio <vigo.the.unholy.carpathian@gmail.com>
 
-pkgname=(rapids-cusignal)
-_pkgname=cusignal
-pkgver=0.16.0a.r43.g660fb33
+pkgname=(rapids-cuspatial)
+_pkgname=cuspatial
+pkgver=0.17.0a.r0.g62e7d8d
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
-depends=('python-cupy' 'python-numba' 'python-scipy' 'python-six')
-# source=("${_pkgname}::git+https://github.com/rapidsai/cusignal.git")
-source=("${_pkgname}::git+https://github.com/rapidsai/cusignal.git#branch=branch-0.16")
-#  "windows.py.patch" "spectral.py.patch" )
+depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake' 'python' 'cython' 'python-cupy' 'gdal' 'python-gdal')
+# makedepends=('protobuf-static')
+# optional=('openucx')
+source=("${_pkgname}::git+https://github.com/rapidsai/cuspatial.git#branch=branch-0.16"
+#         "${_pkgname2}::git+https://github.com/rapidsai/cudf.git"
+ polygon_bounding_box.cu.patch)
+
+#  "setup.py.patch" )
 
 # sha256sums=('SKIP')
-# sha256sums=('SKIP' 'SKIP')
-sha256sums=('SKIP')
+sha256sums=('SKIP' 'SKIP')
+# sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
-    cd cusignal
+    cd cuspatial
 
     local _version
     local _revision
@@ -37,38 +41,78 @@ pkgver() {
 
 build() {
   cd "${srcdir}"
-  # patch -p0 < windows.py.patch
-  # patch -p0 < spectral.py.patch
+  # patch -p0 < setup.py.patch
+  patch -p0 < polygon_bounding_box.cu.patch
+  cd "${srcdir}/cuspatial"
+#  git submodule update --init --remote --recursive
+  git submodule sync --recursive && git submodule update --init --recursive
+  # find cpp -name '*.cu' | xargs fgrep -l "utilities/legacy" | xargs sed -i -e 's/utilities\/legacy\/cuda_utils/cudf\/utilities\/legacy\/cuda_utils/g'
+  # find cpp -name '*.cu' | xargs fgrep -l "utilities/legacy" | xargs sed -i -e 's/utilities\/legacy\/error_utils/cudf\/utilities\/legacy\/error_utils/g'
+  # find cpp -name '*.cu' | xargs fgrep -l "utilities/legacy" | xargs sed -i -e 's/utilities\/legacy\/column_utils/cudf\/utilities\/legacy\/column_utils/g'
 
-  cd "${srcdir}/cusignal"
-  git submodule update --init --remote --recursive
 
-export CC=/usr/bin/gcc-9
-export CXX=/usr/bin/g++-9
+  cd cpp
+  mkdir -p build
+  cd build
+  export CUDAHOSTCXX=/usr/bin/g++
+
+
+  export CUDA_HOME=/opt/cuda
+  export CUDA_BIN_PATH=$CUDA_HOME
+  export CUSPATIAL_HOME=${srcdir}/cuspacial
+  export CUDF_HOME=${srcdir}/cuspacial
+
+   #  -DPARALLEL_LEVEL=6 \
+   # -DENABLE_PROTOBUF=ON \
+   # -DCMAKE_CXX_FLAGS="-march=skylake -O3" \
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_CUSPATIAL_C_LIBRARY=ON \
+    -DGPU_ARCHS=75 \
+    -DCMAKE_CXX11_ABI=ON \
+    -DNVTX=OFF \
+    -DBUILD_CUSPATIAL_TESTS=ON \
+    -DBUILD_CUSPATIAL_MG_TESTS=OFF \
+    -DBUILD_PRIMS_TESTS=OFF \
+    -DBUILD_CUSPATIAL_EXAMPLES=OFF \
+    -DBUILD_CUSPATIAL_BENCH=OFF \
+    -DBUILD_CUSPATIAL_PRIMS_BENCH=OFF \
+    -DBUILD_CUSPATIAL_STD_COMMS=OFF \
+    -DBUILD_CUSPATIAL_MPI_COMMS=OFF 
+    # -DProtobuf_LIBRARY=/usr/lib/libprotobuf.so 
+    # -DWITH_UCX=OFF \
+    # make -j6
+    # sed -i -e 's/-lpthread -ldl/-lprotobuf -ldl/g' ./CMakeFiles/cuspatial++.dir/link.txt
+    make -j6 VERBOSE=1
+
     export LD_LIBRARY_PATH=/usr/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:/opt/magma/lib
     export CUDA_PATH=/opt/cuda
     export CUDA_HOME=/opt/cuda
 
     export PATH=/opt/cuda:$PATH
-    export CFLAGS='-march=skylake -mtune=native -O3 -pipe -fstack-protector -I/opt/cuda/include'
+    # export CFLAGS='-march=skylake -mtune=native -O3 -pipe -fstack-protector -I/opt/cuda/include'
     export NVCC='/opt/cuda/bin/nvcc'
     export CUB_PATH=/usr
     export LDFLAGS=-L/opt/cuda/lib64
-    export GPU_ARCHS=75
 
-    cd "${srcdir}"/cusignal/python
-#     find . -name '*.py' | xargs fgrep -l "numba.types" | xargs sed -i -e 's/numba.types/numba.core.types/g'
+    cd "${srcdir}"/cuspatial/python/cuspatial
 
-    python setup.py build_ext  --inplace --verbose
+    python setup.py build_ext -j6 --inplace --library-dir="${srcdir}"/cuspatial/cpp/build --verbose
 
 
 }
 
-package_rapids-cusignal() {
-  cd "${srcdir}"/cusignal/python
-  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1
+package_rapids-cuspatial() {
+  cd "${srcdir}"/cuspatial/cpp/build
 
-  install -Dm644 ${srcdir}/cusignal/LICENSE ${pkgdir}/usr/share/licenses/rapids-cusignal/LICENSE
+  make DESTDIR="${pkgdir}" install
+
+  cd "${srcdir}"/cuspatial/python/cuspatial
+  python setup.py install --single-version-externally-managed  --prefix=/usr --root="${pkgdir}" --optimize=1 
+
+  install -Dm644 ${srcdir}/cuspatial/LICENSE ${pkgdir}/usr/share/licenses/rapids-cuspatial/LICENSE
 }
 
 # vim:set ts=2 sw=2 et:
