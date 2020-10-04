@@ -3,21 +3,21 @@
 
 pkgname=python-cupy
 _pkgname=cupy
-pkgver=8.0.0rc1.r200.gc1bf1aab6
+pkgver=8.0.0.r0.g96856645e
 _pkgver=7.4.0
 pkgrel=1
 pkgdesc='NumPy-like API accelerated with CUDA'
 arch=('any')
 url='https://github.com/cupy/cupy'
 license=('custom')
-depends=('gcc9' 'python-numpy' 'python-six'  'cuda' 'cudnn' 'python-fastrlock' 'libcutensor')
+depends=( 'python-numpy' 'python-six'  'cuda' 'cudnn' 'python-fastrlock' 'libcutensor')
 # depends=('gcc9' 'python-numpy' 'python-six'  'cuda' 'cudnn' 'python-fastrlock' 'libcutensor')
 makedepends=('git' 'python-setuptools')
 checkdepends=('python-pytest' 'python-hypothesis')
 conflicts=('python-cupy')
 provides=('python-cupy')
-source=('git://github.com/cupy/cupy.git')
-# source=('git://github.com/cupy/cupy.git#tag=v8.0.0b2')
+# source=('git://github.com/cupy/cupy.git')
+source=('git://github.com/cupy/cupy.git#tag=v8.0.0')
 # source=("$pkgname-$pkgver.tar.gz::https://github.com/cupy/cupy/archive/v$pkgver.tar.gz")
 md5sums=('SKIP' )
 
@@ -35,9 +35,7 @@ build() {
 
  sed -i -e 's/7999/8999/g' install/build.py
   export CUDA_PATH=/opt/cuda
-  export CC=/usr/bin/gcc-9
-  export CXX=/usr/bin/g++-9
-  export CUDAHOSTCXX=/usr/bin/g++-9
+  export CUDAHOSTCXX=/usr/bin/g++
   export CFLAGS='-march=skylake -mtune=native -O3 -pipe -fstack-protector'
   export CUPY_NVCC_GENERATE_CODE="arch=compute_75,code=sm_75"
   export LD_LIBRARY_PATH=/usr/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:/opt/magma/lib
