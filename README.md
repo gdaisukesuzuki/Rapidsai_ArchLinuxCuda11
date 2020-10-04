@@ -15,7 +15,7 @@ a  procedure of building NVIDIA's [RAPIDS](https://rapids.ai/) under Arch Linux 
 
 ** AUR / yay required
 
-** Build on CUDA11 (+CUDNN8)
+** Build on CUDA11.1 (+CUDNN8)
 
 * Disclaimer
 
