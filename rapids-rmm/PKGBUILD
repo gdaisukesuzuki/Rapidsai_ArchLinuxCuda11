@@ -5,21 +5,22 @@
 
 pkgname=(rapids-rmm)
 _pkgname=rmm
-pkgver=0.16.0a.r381.gf864801
+pkgver=0.17.0a.r1.g273f92d
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
-depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba')
+depends=( 'cython' 'cuda' 'cmake' 'python-numba' 'fmt')
 # depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba' 'spdlog')
 # source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git")
 source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git#branch=branch-0.16"
      "setup.py.patch"
+     "gpu.pxi"
   )
 
 # sha256sums=('SKIP')
-sha256sums=('SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
     cd rmm
@@ -40,35 +41,36 @@ build() {
   cd "${srcdir}/rmm"
   git submodule update --init --remote --recursive
 
-  export CC=/usr/bin/gcc-9
-  export CXX=/usr/bin/g++-9
-  export CUDAHOSTCXX=/usr/bin/g++-9
+  export CUDAHOSTCXX=/usr/bin/g++
 
+  mkdir -p python/rmm/_cuda/11.1
+  cd  python/rmm/_cuda/11.1
+  ln -fs "${srcdir}/gpu.pxi" .
 
+  cd "${srcdir}/rmm"
   mkdir -p build
   cd build
   #  -DCMAKE_CXX_FLAGS="-march=skylake -O3 -DSPDLOG_FMT_EXTERNAL" \
   cmake .. \
     -DCMAKE_CXX_FLAGS="-march=skylake -O3" \
-    -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-9 \
-    -DCMAKE_C_COMPILER=/usr/bin/gcc-9 \
-    -DCMAKE_CXX_COMPILER=/usr/bin/g++-9 \
+    -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++ \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED_LIBS=ON \
     -DBUILD_TESTS=OFF \
     -DBUILD_BENCHMARKS=OFF \
+    -DPER_THREAD_DEFAULT_STREAM=ON \
     -DCMAKE_CXX11_ABI=ON \
     -DGPU_TARGET="sm_75"
   make spdlog
-  make -j6
+  make -j6 all
 
   cd "${srcdir}"/rmm/include
   ln -sf ../build/_deps/cnmam-src/include/cnmem.h .
   ln -sf ../build/_deps/spdlog-src/include/spdlog .
 
   cd "${srcdir}"
-  # patch -p0 < setup.py.patch
+  patch -p0 < setup.py.patch
 
   cd "${srcdir}"/rmm/python
   export LD_LIBRARY_PATH=/usr/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:/opt/magma/lib
