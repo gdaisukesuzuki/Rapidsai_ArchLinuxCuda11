@@ -6,13 +6,13 @@
 pkgname=(python-ucx)
 _pkgname=ucx-py
 # _pkgname2=hornet
-pkgver=0.16.0a.r85.g5652cb3
+pkgver=0.17.0a.r4.g1b4b580
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
-depends=('openucx' 'python-numpy' 'python-psutil' 'gcc9')
+depends=('openucx' 'python-numpy' 'python-psutil' )
 source=("${_pkgname}::git+https://github.com/rapidsai/ucx-py.git#branch=branch-0.16"
   # "CMakeLists.txt.patch" # "error_utils.h.patch" "renumber.cuh.patch"
   # "setup.py.patch"
@@ -49,9 +49,7 @@ build() {
   cd "${srcdir}"/ucx-py
   git submodule update --init --remote --recursive
 
-  export CC=/usr/bin/gcc-9
-  export CXX=/usr/bin/g++-9
-  export CUDAHOSTCXX=/usr/bin/g++98
+  export CUDAHOSTCXX=/usr/bin/g++
 
   export CUDA_HOME=/opt/cuda
   export CUDA_BIN_PATH=$CUDA_HOME
