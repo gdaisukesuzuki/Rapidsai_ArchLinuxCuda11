@@ -4,12 +4,12 @@
 pkgname=('python-pyarrow-cuda')
 pkgbase='arrow'
 pkgver=0.17.1
-pkgrel=0
+pkgrel=2
 pkgdesc="A columnar in-memory analytics layer for big data."
 arch=('x86_64')
 url="https://arrow.apache.org"
 license=('Apache')
-depends=('gcc9' 'arrow-cuda=0.17.1' 'boost-libs' 'brotli' 'double-conversion' 'c-ares-cmake' 'gflags' 'grpc>=1.27.0' 'google-glog' 'lz4' 'protobuf' 'rapidjson' 'snappy' 'thrift' 'uriparser' 'zstd' 'cuda')
+depends=( 'arrow-cuda=0.17.1' 'boost-libs' 'brotli' 'double-conversion' 'c-ares-cmake' 'gflags' 'grpc>=1.27.0' 'google-glog' 'lz4' 'protobuf' 'rapidjson' 'snappy' 'thrift' 'uriparser' 'zstd' 'cuda')
 checkdepends=('git')
 optdepends=()
 makedepends=('apache-orc' 'boost' 'cmake' 'flatbuffers' 'python-numpy')
@@ -28,8 +28,7 @@ package_python-pyarrow-cuda() {
   patch -p0 < "tensorflow-abi.patch"
   cd "$srcdir"/$pkgbase-apache-$pkgbase-$pkgver/python
   PARALLEL=6 CUDA_HOME=/opt/cuda ARROW_HOME=/usr PARQUET_HOME=/usr \
-    CC=/usr/bin/gcc-9 CXX=/usr/bin/g++-9 \
-    CUDAHOSTCXX=/usr/bin/g++-9 \
+    CUDAHOSTCXX=/usr/bin/g++ \
     python setup.py build_ext  \
     --with-parquet --with-plasma --with-flight --with-tensor --with-orc \
     --with-dataset --with-cuda \
