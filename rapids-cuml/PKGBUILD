@@ -5,14 +5,14 @@
 
 pkgname=(rapids-cuml)
 _pkgname=cuml
-pkgver=0.16.0a.r817.g29245dd32
+pkgver=0.17.0a.r2.g5b2d4df53
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
 # depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake'  'zlib' 'blas' 'python' 'cython' 'python-cupy' 'protobuf')
-depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake'  'zlib' 'blas' 'python' 'cython' 'python-cupy' 'protobuf' 'python-treelite')
+depends=('rapids-cudf'  'cuda' 'cmake'  'zlib' 'blas' 'python' 'cython' 'python-cupy' 'protobuf' 'python-treelite')
 # makedepends=('protobuf-static')
 optional=('openucx')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cuml.git"
@@ -60,9 +60,7 @@ build() {
   cd cpp
   mkdir -p build
   cd build
-  export CC=/usr/bin/gcc-9
-  export CXX=/usr/bin/g++-9
-  export CUDAHOSTCXX=/usr/bin/g++-9
+  export CUDAHOSTCXX=/usr/bin/g++
 
   export CUDA_HOME=/opt/cuda
   export CUDA_BIN_PATH=$CUDA_HOME
@@ -72,9 +70,7 @@ build() {
   cmake .. \
     -DCMAKE_CXX_FLAGS="-fpermissive -march=skylake -O3 -pipe -pthread" \
     -DCMAKE_C_FLAGS="-fpermissive -march=skylake -O3 -pipe -pthread" \
-       -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-9 \
-       -DCMAKE_CXX_COMPILER=/usr/bin/g++-9 \
-       -DCMAKE_C_COMPILER=/usr/bin/gcc-9 \
+       -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++ \
     -DCMAKE_BUILD_TYPE=Release \
     -DBLAS_LIBRARIES=/usr/lib/libopenblas.so \
     -DCMAKE_INSTALL_PREFIX=/usr \
