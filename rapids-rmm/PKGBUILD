@@ -62,7 +62,7 @@ build() {
     -DPER_THREAD_DEFAULT_STREAM=ON \
     -DCMAKE_CXX11_ABI=ON \
     -DGPU_TARGET="sm_75"
-  make spdlog
+  # make spdlog
   make -j6 all
 
   cd "${srcdir}"/rmm/include
@@ -90,10 +90,10 @@ build() {
 package_rapids-rmm() {
   cd "${srcdir}"/rmm/build
   make DESTDIR="${pkgdir}" install
-  cd "${srcdir}"/rmm/build/_deps/spdlog-build
-  make DESTDIR="${pkgdir}" install
-  cd "${srcdir}"/rmm/build/_deps/spdlog-src/include
-  cp -pr spdlog ${pkgdir}/usr/include
+#  cd "${srcdir}"/rmm/build/_deps/spdlog-build
+#  make DESTDIR="${pkgdir}" install
+#  cd "${srcdir}"/rmm/build/_deps/spdlog-src/include
+#  cp -pr spdlog ${pkgdir}/usr/include
   cd "${srcdir}"/rmm/python
   export LD_LIBRARY_PATH=/opt/cuda/lib64:${srcdir}/rmm/build:$LD_LIBRARY_PATH
   python setup.py install --prefix=/usr --root="${pkgdir}"  --optimize=1  --skip-build
