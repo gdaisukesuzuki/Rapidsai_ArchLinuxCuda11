@@ -3,7 +3,7 @@
 # Contributor: pingplug <pingplug@foxmail.com>
 # Contributor: cornholio <vigo.the.unholy.carpathian@gmail.com>
 
-pkgname=(python-rapids-dask-cuda)
+pkgname=(python-dask-cuda)
 _pkgname=dask-cuda
 pkgver=0.17.0a.r0.gb6cfacc
 pkgrel=1
