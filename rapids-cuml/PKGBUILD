@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cuml)
 _pkgname=cuml
-pkgver=0.17.0a.r2.g5b2d4df53
+pkgver=0.17.0a.r8.g264a0d235
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
@@ -70,6 +70,7 @@ build() {
   cmake .. \
     -DCMAKE_CXX_FLAGS="-fpermissive -march=skylake -O3 -pipe -pthread" \
     -DCMAKE_C_FLAGS="-fpermissive -march=skylake -O3 -pipe -pthread" \
+     -DPARALLEL_LEVEL=6 \
        -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++ \
     -DCMAKE_BUILD_TYPE=Release \
     -DBLAS_LIBRARIES=/usr/lib/libopenblas.so \
@@ -97,8 +98,8 @@ build() {
     -DENABLE_CUMLPRIMS_MG=OFF \
     -DBUILD_STATIC_FAISS=ON \
     -DDISABLE_CUMLPRIMS_MG=ON \
+    -DNCCL_PATH=/usr \
     -DPROTOBUF_LIBRARY=/usr/lib/libprotobuf.so 
-    # -DNCCL_PATH=/usr \
     # -DWITH_UCX=OFF 
     # make -j6
 
