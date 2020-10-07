@@ -6,28 +6,28 @@
 pkgname=(rapids-cugraph)
 _pkgname=cugraph
 # _pkgname2=hornet
-pkgver=0.16.0a.r193.g3cacd9a0
+pkgver=0.17.0a.r4.g9a9d2c77
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
-depends=('clang' 'rapids-cudf' 'gcc9' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser' 'python-ucx')
+depends=('rapids-cudf'  'cuda' 'cmake' 'python' 'cython' 'libcypher-parser'  )
 # depends=('clang' 'rapids-cudf' 'gcc8' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser-static')
 # depends=('clang' 'rapids-cudf' 'gcc8' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser-static' 'hortnet')
 # depends=('clang' 'rapids-cudf' 'gcc8' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser-static' 'gunrock-static')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cugraph.git"
 source=("${_pkgname}::git+https://github.com/rapidsai/cugraph.git#branch=branch-0.16"
-  "CMakeLists.txt.patch" # "error_utils.h.patch" "renumber.cuh.patch"
-  "setup.py.patch"
-  "cusparse_helper.cu.patch"
+   # "error_utils.h.patch" "renumber.cuh.patch"
+   "setup.py.patch"
 #  "https://raw.githubusercontent.com/hornet-gt/hornet/master/hornet/include/Hornet.hpp"
   )
 #  "${_pkgname2}::git+https://github.com/hornet-gt/hornet.git#tag=0.5")
 
 # sha256sums=( 'SKIP')
-# sha256sums=('SKIP' 'SKIP')
-sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP')
+# sha256sums=('SKIP' 'SKIP' 'SKIP')
+# sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
     cd cugraph
@@ -47,7 +47,9 @@ pkgver() {
 
 build() {
   cd "${srcdir}"
-  patch -p0 < CMakeLists.txt.patch
+#  patch -p0 < CMakeLists.txt.patch
+#  patch -p0 < testCmakeLists.txt.patch
+#  rm cugraph/cpp/cmake/Modules/FindNCCL.cmake
 #  patch -p0 < cusparse_helper.cu.patch
 #  patch -p0 < error_utils.h.patch
 #  patch -p0 < renumber.cuh.patch
@@ -62,9 +64,7 @@ build() {
   cd cpp
   mkdir -p build
   cd build
-  export CC=/usr/bin/gcc-9
-  export CXX=/usr/bin/g++-9
-  export CUDAHOSTCXX=/usr/bin/g++-9
+  export CUDAHOSTCXX=/usr/bin/g++
 
   export CUDA_HOME=/opt/cuda
   export CUDA_BIN_PATH=$CUDA_HOME
@@ -73,9 +73,7 @@ build() {
    # -DENABLE_PROTOBUF=ON \
   cmake .. \
     -DCMAKE_CXX_FLAGS="-march=skylake -O3" \
-           -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++-9 \
-       -DCMAKE_CXX_COMPILER=/usr/bin/g++-9 \
-       -DCMAKE_C_COMPILER=/usr/bin/gcc-9 \
+           -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++ \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED_LIBS=ON \
@@ -83,8 +81,14 @@ build() {
     -DWITH_UCX=ON \
     -DCMAKE_CXX11_ABI=ON \
                  -DGUNROCK_BUILD_SHARED_LIBS=ON \
-                -DGUNROCK_BUILD_TESTS=OFF
+                -DGUNROCK_BUILD_TESTS=OFF \
+                      -DGUNROCK_GENCODE_SM60=FALSE \
+                    -DGUNROCK_GENCODE_SM61=FALSE \
+                    -DGUNROCK_GENCODE_SM70=FALSE \
+                    -DGUNROCK_GENCODE_SM72=FALSE \
+                    -DGUNROCK_GENCODE_SM75=TRUE
 
+   #  make raft -j6 VERBOSE=1
      make  -j6 VERBOSE=1
     # sed -i -e 's/-lpthread -ldl/-lprotobuf -ldl/g' ./CMakeFiles/cugraph++.dir/link.txt
   #  make  VERBOSE=1
@@ -101,6 +105,10 @@ build() {
     export LDFLAGS=-L/opt/cuda/lib64
 
     cd "${srcdir}"/cugraph/python
+
+    # rm -rf cugraph/dask "${srcdir}"/cugraph/cpp/build/raft/src/raft/python/raft/dask
+    # rm -rf  "${srcdir}"/cugraph/cpp/build/raft/src/raft/python/raft/dask/common/comms_utils.pyx
+    # rm -rf  "${srcdir}"/cugraph/cpp/build/raft/src/raft/python/raft/dask/common/nccl.pyx
 
     PARALLEL=6 python setup.py build_ext --inplace --verbose --library-dir="${srcdir}"/cugraph/cpp/build
 
