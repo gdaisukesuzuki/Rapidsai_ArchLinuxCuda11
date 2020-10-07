@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cuxfilter)
 _pkgname=cuxfilter
-pkgver=0.17.0a.r5.g7d870ec
+pkgver=0.17.0a.r8.g9f8f21e
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
