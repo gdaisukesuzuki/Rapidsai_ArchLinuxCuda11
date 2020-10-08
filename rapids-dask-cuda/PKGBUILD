@@ -5,7 +5,7 @@
 
 pkgname=(python-dask-cuda)
 _pkgname=dask-cuda
-pkgver=0.17.0a.r0.gb6cfacc
+pkgver=0.17.0a.r2.g04dcbb6
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
