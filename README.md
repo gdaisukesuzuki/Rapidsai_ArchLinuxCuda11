@@ -1,4 +1,4 @@
-# How to BUild NVIDIA's RAPIDS on Arch Linux on CUDA11
+# How to Build NVIDIA's RAPIDS on Arch Linux on CUDA11
 PKGBUILD's for building NVIDIA's RAPIDS (cuML/cuDF) on Arch Linux + CUDA11
 a  procedure of building NVIDIA's [RAPIDS](https://rapids.ai/) under Arch Linux with CUDA environment on  '''Single Nvidia's GPU'''.
 
@@ -15,7 +15,7 @@ a  procedure of building NVIDIA's [RAPIDS](https://rapids.ai/) under Arch Linux 
 
 ** AUR / yay required
 
-** Build on CUDA11.1 (+CUDNN8)
+** Build on CUDA11.1 (+CUDNN8 + N)
 
 * Disclaimer
 
@@ -81,52 +81,58 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 * See [github](https://github.com/rapidsai/rmm)
 * amend PKGBUILD and setup.py.patch to avoid missing libraries (cudart fmt...) (2020.8.21. 2300GMT)
 ```
+9  [dask-cuda](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-dask-cuda/PKGBUILD)
+```
+* Utilities for CUDA and DASK.
+* See [github](https://github.com/rapidsai/dask-cuda)
+```
 
-9  [cuDF](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cudf/PKGBUILD)
+10  [cuDF](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cudf/PKGBUILD)
 ```
 *  a GPU DataFrame taking place of pandas
 * See [github](https://github.com/rapidsai/cudf)
 ```
 
-10 [cuML](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cuml/PKGBUILD)
+11 [cuML](https://github.com/gdaisukesuzuki/PKGBUILD_Rapids/tree/master/rapids-cuml/PKGBUILD)
 ```
 *  A suite of libraries that implement machine learning algorithms presented by Rapids.
 * See [github](https://github.com/rapidsai/cuml)
 * amend PKGBUILD and setup.py.patch to avoid missing libraries (cublas cusuparse cusolver ...) (2020.9.19. 1400GMT)
 ```
 
-10.  [libcypher-parse](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/libcypher-parser/PKGBUILD)
+12.  [libcypher-parse](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/libcypher-parser/PKGBUILD)
 ```
 * required for building cuGraph
 ```
 
 
-11.  [cuSignal](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cusignal/PKGBUILD)
+12.  [cuSignal](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cusignal/PKGBUILD)
 ```
 * GPU accelerated signal processing which may replace scipy signal?
 * See [github](https://github.com/rapidsai/cusignal)
 ```
 
-12. [gdal, python-gdal](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/gdal/PKGBUILD)
+13. [gdal, python-gdal](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/gdal/PKGBUILD)
 
 ```
 * a bug-fix patch required to build gdal under poppler upgraded to 20.08.1
 ```
 
 
-13. [rapids-cuSpatial](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cuspatial/PKGBUILD)
+14. [rapids-cuSpatial](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cuspatial/PKGBUILD)
 ```
 * a library for handling spatial and trajectory data.
 * gdal and python-gdal are needed
 * See [github](https://github.com/rapidsai/cuspatial)
 ```
 
-14. [rapids-cuGraph](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cugraph/PKGBUILD)
+15. [rapids-cuGraph](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/rapids-cugraph/PKGBUILD)
 ```
-* Sorry, it cannot be built without NCCL for now.
+* a library for Graph Analytics
+* See [github](https://github.com/rapidsai/cugraph)
 ```
 
-15. [rapids-cuxfilter](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/rapids-cuxfilter/PKGBUILD)
+16. [rapids-cuxfilter](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/tree/master/rapids-cuxfilter/PKGBUILD)
 ```
 * cuxfilter ( ku-cross-filter ) is a RAPIDS framework to connect web visualizations to GPU accelerated crossfiltering.
 * See [github](https://github.com/rapidsai/cuxfilter)
