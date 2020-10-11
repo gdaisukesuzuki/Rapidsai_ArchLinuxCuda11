@@ -6,7 +6,7 @@
 pkgname=(rapids-cugraph)
 _pkgname=cugraph
 # _pkgname2=hornet
-pkgver=0.17.0a.r4.g9a9d2c77
+pkgver=0.17.0a.r12.gd9270145
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
@@ -17,7 +17,7 @@ depends=('rapids-cudf'  'cuda' 'cmake' 'python' 'cython' 'libcypher-parser'  )
 # depends=('clang' 'rapids-cudf' 'gcc8' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser-static' 'hortnet')
 # depends=('clang' 'rapids-cudf' 'gcc8' 'cuda' 'cmake' 'nccl' 'python' 'cython' 'libcypher-parser-static' 'gunrock-static')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cugraph.git"
-source=("${_pkgname}::git+https://github.com/rapidsai/cugraph.git#branch=branch-0.16"
+source=("${_pkgname}::git+https://github.com/rapidsai/cugraph.git#branch=branch-0.17"
    # "error_utils.h.patch" "renumber.cuh.patch"
    "setup.py.patch"
 #  "https://raw.githubusercontent.com/hornet-gt/hornet/master/hornet/include/Hornet.hpp"
