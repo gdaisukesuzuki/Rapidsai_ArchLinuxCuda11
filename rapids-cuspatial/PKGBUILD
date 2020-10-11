@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cuspatial)
 _pkgname=cuspatial
-pkgver=0.17.0a.r0.g62e7d8d
+pkgver=0.17.0a.r0.gea3cf2e
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
@@ -14,7 +14,7 @@ license=('custom')
 depends=('rapids-cudf' 'gcc9' 'cuda' 'cmake' 'python' 'cython' 'python-cupy' 'gdal' 'python-gdal')
 # makedepends=('protobuf-static')
 # optional=('openucx')
-source=("${_pkgname}::git+https://github.com/rapidsai/cuspatial.git#branch=branch-0.16"
+source=("${_pkgname}::git+https://github.com/rapidsai/cuspatial.git#branch=branch-0.17"
 #         "${_pkgname2}::git+https://github.com/rapidsai/cudf.git"
  polygon_bounding_box.cu.patch)
 
