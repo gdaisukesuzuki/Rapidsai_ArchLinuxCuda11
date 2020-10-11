@@ -46,7 +46,7 @@ Operation is not necessarily guaranteed. The author are not responsible for any 
 4.  [Cupy](https://github.com/gdaisukesuzuki/Rapidsai_ArchLinuxCuda11/blob/master/cupy/PKGBUILD)
 ```
 * An implementation of NumPy-compatible  array on CUDA presented by Preferred Networks.
-* AUR provides the same package. However,  AUR only contains older ver (7.2.0). which does not support CUDA 11.0 , (current ver. is 8.0.0b5) 
+* AUR provides the same package. However,  AUR only contains older ver (7.2.0). which does not support CUDA 11.0 , (current ver. is 8.0.0) 
 *  See [github](https://github.com/cupy/cupy)
 ```
 
