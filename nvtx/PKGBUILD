@@ -1,0 +1,31 @@
+# Maintainer: Sven-Hendrik Haase <svenstaro@gmail.com>
+# Contributor: bartus <arch-user-repoᘓbartus.33mail.com>
+# Contributor: pingplug <pingplug@foxmail.com>
+# Contributor: cornholio <vigo.the.unholy.carpathian@gmail.com>
+
+pkgname=(nvtx)
+_pkgname=NVTX
+pkgver=3.0.1
+pkgrel=0
+pkgdesc="NVIDIA Tool Extension Library"
+arch=('x86_64')
+url="https://github.com/NVIDIA/NVTX"
+license=('custom')
+depends=('cuda')
+# depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba' 'spdlog')
+# source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git")
+source=("https://github.com/NVIDIA/NVTX/archive/v3.0.1.tar.gz")
+
+sha256sums=('SKIP')
+# sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}/c/include"
+  mkdir -p ${pkgdir}/usr/include
+  cp -pr nvtx3 ${pkgdir}/usr/include/
+  install -Dm644 ${srcdir}/${_pkgname}-${pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/nvtx/LICENSE
+}
+
+# vim:set ts=2 sw=2 et:
