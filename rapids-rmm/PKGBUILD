@@ -6,7 +6,7 @@
 pkgname=(rapids-rmm)
 _pkgname=rmm
 conflicts=(spdlog)
-pkgver=0.17.0a.r2.g60c6154
+pkgver=0.17.0a.r4.g2752e28
 pkgrel=1
 pkgdesc="RAPIDS Memory Manager"
 arch=('x86_64')
@@ -15,7 +15,7 @@ license=('custom')
 depends=( 'cython' 'cuda' 'cmake' 'python-numba' 'fmt')
 # depends=('gcc9' 'cython' 'cuda' 'cmake' 'python-numba' 'spdlog')
 # source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git")
-source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git#branch=branch-0.16"
+source=("${_pkgname}::git+https://github.com/rapidsai/rmm.git#branch=branch-0.17"
      "setup.py.patch"
      "gpu.pxi"
   )
