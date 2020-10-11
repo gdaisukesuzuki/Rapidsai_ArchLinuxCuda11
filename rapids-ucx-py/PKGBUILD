@@ -6,14 +6,14 @@
 pkgname=(python-ucx)
 _pkgname=ucx-py
 # _pkgname2=hornet
-pkgver=0.17.0a.r7.g116f978
+pkgver=0.17.0a.r13.g69de76c
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
 url="https://rapids.ai/"
 license=('custom')
 depends=('openucx' 'python-numpy' 'python-psutil' 'rapids-cudf')
-source=("${_pkgname}::git+https://github.com/rapidsai/ucx-py.git#branch=branch-0.16"
+source=("${_pkgname}::git+https://github.com/rapidsai/ucx-py.git#branch=branch-0.17"
   # "CMakeLists.txt.patch" # "error_utils.h.patch" "renumber.cuh.patch"
   # "setup.py.patch"
 #  "https://raw.githubusercontent.com/hornet-gt/hornet/master/hornet/include/Hornet.hpp"
