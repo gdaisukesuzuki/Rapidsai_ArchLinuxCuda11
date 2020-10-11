@@ -5,7 +5,7 @@
 
 pkgname=(rapids-cuml)
 _pkgname=cuml
-pkgver=0.17.0a.r11.g304aa4b61
+pkgver=0.17.0a.r32.g001b67668
 pkgrel=1
 pkgdesc="RAPIDS ML"
 arch=('x86_64')
@@ -16,7 +16,7 @@ depends=('rapids-cudf'  'cuda' 'cmake'  'zlib' 'blas' 'python' 'cython' 'python-
 # makedepends=('protobuf-static')
 optional=('openucx')
 # source=("${_pkgname}::git+https://github.com/rapidsai/cuml.git"
-source=("${_pkgname}::git+https://github.com/rapidsai/cuml.git#branch=branch-0.16"
+source=("${_pkgname}::git+https://github.com/rapidsai/cuml.git#branch=branch-0.17"
   "setup.py.patch"
   "knn.cuh.patch"
 )
