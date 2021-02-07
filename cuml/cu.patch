@@ -1,0 +1,36 @@
+*** cuml/cpp/src/decisiontree/decisiontree.cu-dist	Thu Feb  4 21:51:10 2021
+--- cuml/cpp/src/decisiontree/decisiontree.cu	Thu Feb  4 21:51:33 2021
+***************
+*** 14,19 ****
+--- 14,20 ----
+   * limitations under the License.
+   */
+  
++ #include <link.h>
+  #include <cuml/tree/flatnode.h>
+  #include <cuml/tree/decisiontree.hpp>
+  #include "decisiontree_impl.cuh"
+*** cuml/cpp/src/random_projection/rproj.cu-dist	Thu Feb  4 22:11:09 2021
+--- cuml/cpp/src/random_projection/rproj.cu	Thu Feb  4 22:11:22 2021
+***************
+*** 14,19 ****
+--- 14,20 ----
+   * limitations under the License.
+   */
+  
++ #include <link.h>
+  #include <cuml/random_projection/rproj_c.h>
+  #include "rproj.cuh"
+  
+*** cuml/cpp/src/randomforest/randomforest.cu-dist	Fri Feb  5 18:20:53 2021
+--- cuml/cpp/src/randomforest/randomforest.cu	Fri Feb  5 18:21:15 2021
+***************
+*** 21,26 ****
+--- 21,27 ----
+  
+  #include <cuml/ensemble/randomforest.hpp>
+  
++ #include <link.h>
+  #include <cuml/tree/flatnode.h>
+  #include <treelite/c_api.h>
+  #include <treelite/tree.h>

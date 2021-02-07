@@ -1,0 +1,98 @@
+*** cuml/python/setup.py-dist	Tue Jan 19 22:48:06 2021
+--- cuml/python/setup.py	Tue Jan 19 22:56:41 2021
+***************
+*** 141,147 ****
+  
+      def initialize_options(self):
+  
+!         self.singlegpu = False
+          super().initialize_options()
+  
+      def finalize_options(self):
+--- 141,147 ----
+  
+      def initialize_options(self):
+  
+!         self.singlegpu = True
+          super().initialize_options()
+  
+      def finalize_options(self):
+***************
+*** 151,157 ****
+          # object has all the args used by the user, we can check that.
+          self.singlegpu = '--singlegpu' in self.distribution.script_args
+  
+!         libs = ['cuda', 'cuml++']
+  
+          include_dirs = [
+              '../cpp/src',
+--- 151,157 ----
+          # object has all the args used by the user, we can check that.
+          self.singlegpu = '--singlegpu' in self.distribution.script_args
+  
+!         libs = ['cuda', 'cuml++',  'cudart', 'cusparse', 'cusolver', 'cublas', 'fmt', 'treelite', 'treelite_runtime', 'dmlc']
+  
+          include_dirs = [
+              '../cpp/src',
+***************
+*** 166,172 ****
+          python_exc_list = []
+  
+          if (self.singlegpu):
+!             python_exc_list = ["*.dask", "*.dask.*"]
+          else:
+              libs.append('cumlprims')
+              libs.append('nccl')
+--- 166,172 ----
+          python_exc_list = []
+  
+          if (self.singlegpu):
+!             python_exc_list = ["*.dask", "*.dask.*",  "*.*.dask", "*.*.dask.*", "*.dask.*.*","*.*.dask.*.*"]
+          else:
+              libs.append('cumlprims')
+              libs.append('nccl')
+***************
+*** 183,194 ****
+              Extension("*",
+                        sources=["cuml/**/*.pyx"],
+                        include_dirs=include_dirs,
+!                       library_dirs=[get_python_lib(), libcuml_path],
+                        runtime_library_dirs=[
+                            cuda_lib_dir, os.path.join(os.sys.prefix, "lib")
+                        ],
+                        libraries=libs,
+                        language='c++',
+                        extra_compile_args=['-std=c++14'])
+          ]
+  
+--- 183,195 ----
+              Extension("*",
+                        sources=["cuml/**/*.pyx"],
+                        include_dirs=include_dirs,
+!                       library_dirs=[get_python_lib(), libcuml_path, cuda_lib_dir],
+                        runtime_library_dirs=[
+                            cuda_lib_dir, os.path.join(os.sys.prefix, "lib")
+                        ],
+                        libraries=libs,
+                        language='c++',
++                       define_macros=[('SPDLOG_FMT_EXTERNAL','1')],
+                        extra_compile_args=['-std=c++14'])
+          ]
+  
+***************
+*** 208,214 ****
+  
+      def initialize_options(self):
+  
+!         self.singlegpu = None
+  
+          super().initialize_options()
+  
+--- 209,215 ----
+  
+      def initialize_options(self):
+  
+!         self.singlegpu = True
+  
+          super().initialize_options()
+  
