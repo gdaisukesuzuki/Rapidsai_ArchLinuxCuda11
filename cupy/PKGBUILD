@@ -1,68 +1,137 @@
+# Maintainer: Sven-Hendrik Haase <svenstaro@gmail.com>
+# Contributor: bartus <arch-user-repoᘓbartus.33mail.com>
+# Contributor: pingplug <pingplug@foxmail.com>
+# Contributor: cornholio <vigo.the.unholy.carpathian@gmail.com>
 
-# Maintainer: Mamy Ratsimbazafy <mamy (dot) ratsimbazafy_pkgbuild [at] gadz (dot) org>
-
-pkgname=python-cupy
-_pkgname=cupy
-pkgver=8.0.0rc1.r697.g890e40cfd
-_pkgver=7.4.0
+pkgname=(cudf python-cudf)
+_pkgname=cudf
+pkgver=0.19.0a.r40.gda0e794749
 pkgrel=1
-pkgdesc='NumPy-like API accelerated with CUDA'
-arch=('any')
-url='https://github.com/cupy/cupy'
+pkgdesc="RAPIDS Memory Manager"
+arch=('x86_64')
+url="https://rapids.ai/"
 license=('custom')
-depends=( 'python-numpy' 'python-six'  'cuda' 'cudnn' 'python-fastrlock' 'libcutensor' 'nccl')
-# depends=('gcc9' 'python-numpy' 'python-six'  'cuda' 'cudnn' 'python-fastrlock' 'libcutensor')
-makedepends=('git' 'python-setuptools')
-checkdepends=('python-pytest' 'python-hypothesis')
-conflicts=('python-cupy')
-provides=('python-cupy')
-source=('git://github.com/cupy/cupy.git')
-# source=('git://github.com/cupy/cupy.git#tag=v8.0.0')
-# source=("$pkgname-$pkgver.tar.gz::https://github.com/cupy/cupy/archive/v$pkgver.tar.gz")
-md5sums=('SKIP' )
+depends=('arrow-cuda>=1.0.0' 'nccl' 'cuda' 'cmake' 'python-rmm' 'dlpack' 'boost-libs'  'protobuf' )
+# depends=('arrow-cuda>=1.0.0' 'nccl' 'cuda' 'cuda-tools' 'cuda-static' 'cmake' 'python-rmm' 'dlpack' 'boost-libs'  'protobuf' )
+# depends=('arrow-cuda<1.0.0' 'python-pyarrow-cuda' 'gcc9' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs' 'python-dask'  'python-distributed' 'protobuf' 'python-versioneer')
+# depends=('arrow-cudf<0.16.0' 'gcc8' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs' 'python-dask'  'python-distributed' 'protobuf')
+# makedepends=('python-cmake_setuptools' 'protobuf-static')
+# depends=('arrow-cudf<0.16.0' 'gcc8' 'cuda' 'cmake' 'rapids-rmm' 'dlpack' 'boost-libs')
+# source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git"
+source=("${_pkgname}::git+https://github.com/rapidsai/cudf.git#branch=branch-0.18"
+  "cpp.patch"
+  "cudf_setup.py.patch"
+  )
+#  "orc.hpp.patch"
+#  "remove_keys.cu.patch"
+#  "from.arrow.cu.patch"
+#  "cudf_setup.py.patch" "gather.cu.patch" "ipc.cpp.patch" "reader_impl.cu.patch")
+#  "cudf_setup.py.patch" "nvst_CMakeLists.txt.patch")
+#  "from_arrow.cpp.patch"
+
+# sha256sums=('SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
-  cd $_pkgname
-  git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' |  sed 's/v//g'  
+    cd cudf
+
+    local _version
+    local _revision
+    local _shorthash
+
+    _version="$(git tag | sort -Vr | head -n1 | sed 's/^v//')"
+    _revision="$(git rev-list v"${_version}"..HEAD --count)"
+    _shorthash="$(git rev-parse --short HEAD)"
+
+    printf '%s.r%s.g%s' "$_version" "$_revision" "$_shorthash"
 }
 
+prepare() {
+  cd "${srcdir}"
+#   patch -p0 < nvst_CMakeLists.txt.patch
+#   patch -p0 < gather.cu.patch 
+#   patch -p0 < orc.hpp.patch 
+  patch -p0 < cpp.patch
+  patch -p0 < cudf_setup.py.patch
+#  patch -p0 < from_arrow.cpp.patch
+#   patch -p0 < reader_impl.cu.patch
+#   patch -p0 <  from.arrow.cu.patch
+#    patch -p0 < ipc.cpp.patch
+}
 
 build() {
-#  patch -d cupy -Np1 -i "${srcdir}/../setup_build.py.patch"
-#  cd $_pkgname-$pkgver
- cd $_pkgname
- git submodule update --init
+  cd "${srcdir}/cudf"
+#   git submodule update --init --remote --recursive
+  git submodule sync --recursive && git submodule update --init --recursive
 
- sed -i -e 's/7999/8999/g' install/build.py
-  export CUDA_PATH=/opt/cuda
+  cd cpp
+  mkdir -p build
+  cd build
   export CUDAHOSTCXX=/usr/bin/g++
-  export CFLAGS='-march=skylake -mtune=native -O3 -pipe -fstack-protector'
-  export CUPY_NVCC_GENERATE_CODE="arch=compute_75,code=sm_75"
-  export LD_LIBRARY_PATH=/usr/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:/opt/magma/lib
-  export PATH=/opt/cuda:$PATH
-  export CFLAGS='-march=skylake -mtune=native -O3 -pipe -fstack-protector -std=c++14  -I/opt/cuda/include'
-  export NVCC='/opt/cuda/bin/nvcc'
-  export CUB_PATH=/usr
-  PARALLEL_LEVEL=6 LANG=C CFLAGS="-O3 -fPIC -march=skylake -mtune=native -fstack-protector -std=c++14  -pipe" python setup.py build  --verbose 
-  # LANG=C CFLAGS="-O3 -fPIC -march=skylake -mtune=native -fstack-protector -pipe" python setup.py build  --verbose 
-nn_path=/usr
+
+  #  -DCMAKE_CXX_COMPILER=/usr/bin/g++-9 \
+
+  #   -DCMAKE_CUDA_ARCHITECTURES="sm_75" \
+  cmake .. \
+    -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++ \
+     -DCMAKE_CUDA_ARCHITECTURES="75" \
+     -DCMAKE_CXX_FLAGS="-march=skylake -O3" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_BENCHMARKS=OFF \
+    -DBUILD_LEGACY_TESTS=OFF \
+    -DGPU_ARCHS=75 \
+    -DPER_THREAD_DEFAULT_STREAM=ON \
+    -DUSE_NVTX=ON \
+    -DCMAKE_CXX11_ABI=OFF
+
+
+  cd "${srcdir}"/cudf/cpp/build
+  sed -i -e 's/\/lib\/libarrow_cuda.so/\/lib\/libarrow_cuda.so -lfmt/g' ./CMakeFiles/cudf.dir/link.txt
+
+  for i  in `ls  ./CMakeFiles/*.dir/flags.make`; do
+   sed -i -e 's/_EXPORTS/_EXPORTS -DSPDLOG_FMT_EXTERNAL=1/g' $i
+  done
+  for i  in `ls  ./tests/CMakeFiles/*.dir/flags.make`; do
+   sed -i -e 's/_LEVEL_/_LEVEL_ -DSPDLOG_FMT_EXTERNAL=1/g' $i
+  done
+
+  # sed -i -e 's/cudf_base_EXPORTS/cudf_base_EXPORTS -DSPDLOG_FMT_EXTERNAL=1/g' ./CMakeFiles/cudf_base.dir/flags.make
+  # sed -i -e 's/cudf_io_EXPORTS/cudf_io_EXPORTS -DSPDLOG_FMT_EXTERNAL=1/g' ./CMakeFiles/cudf_io.dir/flags.make
+
+
+  make -j4 cudf VERBOSE=1 # SPDLOG_FMT_EXTERNAL=1
+  cd "${srcdir}"/cudf/python/cudf
+  export CUDF_ROOT="${srcdir}"/cudf/cpp/build
+  PARALLEL_LEVEL=4 python setup.py build_ext  --inplace -j 4 --library-dir="${srcdir}"/cudf/cpp/build --verbose
+  # python setup.py build_ext  --inplace --build-lib=${PWD}  --library-dir="${srcdir}"/cudf/cpp/build --verbose
 
 }
 
+package_cudf() {
+  cd "${srcdir}"/cudf/cpp/build
 
-# check(){
-#  cd "$srcdir/$_pkgname"
-#  pytest tests
-# }
+  make DESTDIR="${pkgdir}" install_cudf
 
-package() {
-  cd $_pkgname
-  # cd $_pkgname-$pkgver
+  install -Dm644 ${srcdir}/cudf/LICENSE ${pkgdir}/usr/share/licenses/cudf/LICENSE
 
-  export CUDA_PATH=/opt/cuda
-  export CC=/usr/bin/gcc-9
-  export CXX=/usr/bin/g++-9
-  python setup.py install --root=${pkgdir} --optimize=1
-
-  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/python-$_pkgname
 }
+
+package_python-cudf()
+{
+  cd "${srcdir}"/cudf/python/cudf
+  
+  export CUDF_ROOT="${srcdir}"/cudf/cpp/build
+  export LD_LIBRARY_PATH="${srcdir}"/cudf/cpp/build:$LD_LIBRARY_PATH
+  python setup.py install --single-version-externally-managed --prefix=/usr --root="${pkgdir}" --optimize=1
+
+  # cd "${srcdir}"/cudf/python/dask_cudf
+  # python setup.py install --single-version-externally-managed --prefix=/usr --root="${pkgdir}" --optimize=1
+
+  # install -Dm644 ${srcdir}/cudf/cpp/src/utilities/legacy/*.hpp ${pkgdir}/usr/include/cudf/utilities/legacy/
+  install -Dm644 ${srcdir}/cudf/LICENSE ${pkgdir}/usr/share/licenses/python-cudf/LICENSE
+
+}
+
+# vim:set ts=2 sw=2 et:

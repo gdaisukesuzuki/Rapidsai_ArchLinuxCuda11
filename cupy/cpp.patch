@@ -1,0 +1,130 @@
+*** cudf/cpp/src/text/subword/data_normalizer.cu-dist	2020-12-01 13:32:07.293433729 +0900
+--- cudf/cpp/src/text/subword/data_normalizer.cu	2020-12-01 13:32:18.390052017 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include <text/subword/detail/data_normalizer.hpp>
+  #include <text/subword/detail/tokenizer_utils.cuh>
+  
+*** cudf/cpp/src/transform/encode.cu-dist	2020-12-01 13:44:05.666261396 +0900
+--- cudf/cpp/src/transform/encode.cu	2020-12-01 13:44:14.929539304 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include <cudf/column/column.hpp>
+  #include <cudf/column/column_view.hpp>
+  #include <cudf/copying.hpp>
+*** cudf/cpp/src/text/subword/wordpiece_tokenizer.cu-dist	2020-12-01 13:44:31.449440236 +0900
+--- cudf/cpp/src/text/subword/wordpiece_tokenizer.cu	2020-12-01 13:44:40.599385260 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include <text/subword/detail/hash_utils.cuh>
+  #include <text/subword/detail/tokenizer_utils.cuh>
+  #include <text/subword/detail/wordpiece_tokenizer.hpp>
+*** cudf/cpp/src/transform/nans_to_nulls.cu-dist	2020-12-01 13:46:51.111926104 +0900
+--- cudf/cpp/src/transform/nans_to_nulls.cu	2020-12-01 13:47:00.631867761 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include <cudf/column/column_device_view.cuh>
+  #include <cudf/column/column_view.hpp>
+  #include <cudf/detail/nvtx/ranges.hpp>
+*** cudf/cpp/src/transform/mask_to_bools.cu-dist	2020-12-01 13:48:41.624578249 +0900
+--- cudf/cpp/src/transform/mask_to_bools.cu	2020-12-01 13:48:51.104519448 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include <thrust/iterator/constant_iterator.h>
+  #include <thrust/transform.h>
+  #include <cudf/column/column_factories.hpp>
+*** cudf/cpp/src/transform/bools_to_mask.cu-dist	2020-12-01 13:49:25.877636655 +0900
+--- cudf/cpp/src/transform/bools_to_mask.cu	2020-12-01 13:49:38.967555112 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include <cudf/column/column_device_view.cuh>
+  #include <cudf/column/column_view.hpp>
+  #include <cudf/detail/iterator.cuh>
+*** cudf/cpp/src/text/subword/load_hash_file.cu-dist	2020-12-01 13:54:49.948358172 +0900
+--- cudf/cpp/src/text/subword/load_hash_file.cu	2020-12-01 13:54:59.934925312 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include <text/subword/detail/codepoint_metadata.ah>
+  #include <text/subword/detail/data_normalizer.hpp>
+  #include <text/subword/detail/tokenizer_utils.cuh>
+*** cudf/cpp/src/io/orc/dict_enc.cu-dist	2020-12-01 14:22:01.665464888 +0900
+--- cudf/cpp/src/io/orc/dict_enc.cu	2020-12-01 14:22:10.615401122 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include "orc_common.h"
+  #include "orc_gpu.h"
+  
+*** cudf/cpp/src/io/orc/stats_enc.cu-dist	2020-12-01 14:23:30.584832172 +0900
+--- cudf/cpp/src/io/orc/stats_enc.cu	2020-12-01 14:23:41.181423550 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include "orc_common.h"
+  #include "orc_gpu.h"
+  
+*** cudf/cpp/src/io/orc/stripe_init.cu-dist	2020-12-01 14:24:52.070920429 +0900
+--- cudf/cpp/src/io/orc/stripe_init.cu	2020-12-01 14:25:01.054190073 +0900
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * limitations under the License.
+   */
+  
++ #include <stdint.h>
++ 
+  #include "orc_common.h"
+  #include "orc_gpu.h"
+  
