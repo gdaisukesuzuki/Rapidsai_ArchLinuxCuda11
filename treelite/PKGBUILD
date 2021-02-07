@@ -5,17 +5,17 @@
 
 pkgname=('treelite' 'python-treelite')
 _pkgname=treelite
-pkgver=0.92.r.gc102e87
-_pkgver=0.92
+pkgver=1.0.0.r.gcf99ff9
+_pkgver=1.0.0
 pkgrel=1
 pkgdesc="decision tree"
 arch=('x86_64')
 url=""
 license=('custom')
-depends=('cmake' 'fmt' 'xgboost' 'gcc9')
+depends=('cmake' 'fmt' 'xgboost' )
 makedepends=('python-setuptools')
-source=("${_pkgname}::git+https://github.com/dmlc/treelite.git")
-# source=("${_pkgname}::git+https://github.com/dmlc/treelite.git#tag=${_pkgver}")
+# source=("${_pkgname}::git+https://github.com/dmlc/treelite.git")
+source=("${_pkgname}::git+https://github.com/dmlc/treelite.git#tag=${_pkgver}")
 
 sha256sums=('SKIP')
 
@@ -39,12 +39,12 @@ build() {
 
   mkdir -p build
   cd build
-  export CC=/usr/bin/gcc-9
-  export CXX=/usr/bin/g++-9
+  export CC=/usr/bin/gcc
+  export CXX=/usr/bin/g++
   cmake .. \
     -DCMAKE_CXX_FLAGS="-march=skylake -O3 -pipe" \
-    -DCMAKE_C_COMPILER=/usr/bin/gcc-9 \
-    -DCMAKE_CXX_COMPILER=/usr/bin/g++-9 \
+    -DCMAKE_C_COMPILER=/usr/bin/gcc \
+    -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED_LIBS=ON \
