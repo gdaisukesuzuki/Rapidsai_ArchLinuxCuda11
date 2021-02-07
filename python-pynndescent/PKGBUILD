@@ -1,0 +1,44 @@
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+# Maintainer: Felix Yan <felixonmars@archlinux.org>
+# Contributor: Douglas Soares de Andrade <dsa@aur.archlinux.org>
+# Contributor: Angel 'angvp' Velasquez <angvp[at]archlinux.com.ve> 
+
+pkgname=python-pynndescent
+pkgver=0.5.1.r.gfdc4c0c
+pkgrel=1
+pkgdesc=""
+arch=('x86_64')
+license=('custom')
+url=""
+depends=('python-joblib' 'python-llvmlite' 'python-scipy' 'python-scikit-learn' 'python-numba')
+makedepends=('python-setuptools')
+# source=("$pkgname-$pkgver.tar.gz::https://github.com/lmcinnes/pynndescent/archive/$pkgver.tar.gz")
+#source=("$pkgname-$pkgver.tar.gz::https://files.pythonhosted.org/packages/f7/44/b7fb68f3b84db7add73754d0d566aed882e66f31c9aeafb36f7e6954722a/pynndescent-0.5.1.tar.gz")
+source=("git+https://github.com/lmcinnes/pynndescent.git")
+sha512sums=('SKIP')
+pkgver() {
+    cd pynndescent
+
+    local _version
+    local _revision
+    local _shorthash
+
+    _version="$(git -C pynndescent describe --tags --long | awk -F'-' '{ sub(/^n/, "", $1); print $1 }')"
+    _revision="$(git -C pynndescent describe --tags --match 'N' | awk -F'-' '{ print $2 }')"
+    _shorthash="$(git -C pynndescent rev-parse --short HEAD)"
+    printf '%s.r%s.g%s' "$_version" "$_revision" "$_shorthash"
+
+}
+build() {
+  cd pynndescent
+#  python setup.py build_ext
+}
+
+
+package() {
+  cd pynndescent
+  python setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/python-pynndescent"
+  install -m644 LICENSE "${pkgdir}/usr/share/licenses/python-pynndescent/"
+}
