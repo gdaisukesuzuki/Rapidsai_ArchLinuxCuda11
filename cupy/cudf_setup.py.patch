@@ -1,0 +1,41 @@
+*** cudf/python/cudf/setup.py-dist	Fri Jan  1 23:52:20 2021
+--- cudf/python/cudf/setup.py	Fri Jan  1 23:55:28 2021
+***************
+*** 36,41 ****
+--- 36,42 ----
+      raise OSError(f"Invalid CUDA_HOME: directory does not exist: {CUDA_HOME}")
+  
+  cuda_include_dir = os.path.join(CUDA_HOME, "include")
++ cuda_library_dir = os.path.join(CUDA_HOME, "lib64")
+  
+  CUDF_ROOT = os.environ.get("CUDF_ROOT", "../../cpp/build/")
+  
+***************
+*** 109,119 ****
+          ],
+          library_dirs=(
+              pa.get_library_dirs()
+              + [get_python_lib(), os.path.join(os.sys.prefix, "lib")]
+          ),
+!         libraries=["cudf"] + pa.get_libraries() + ["arrow_cuda"],
+          language="c++",
+          extra_compile_args=["-std=c++14"],
+      )
+  ]
+  
+--- 110,124 ----
+          ],
+          library_dirs=(
+              pa.get_library_dirs()
++             + [cuda_library_dir]
+              + [get_python_lib(), os.path.join(os.sys.prefix, "lib")]
+          ),
+!         libraries=["cudf","cuda","cudart","fmt"] + pa.get_libraries() + ["arrow_cuda"]
+!             + ["cudf_ast","cudf_base","cudf_comms","cudf_hash","cudf_interop","cudf_io","cudf_join","cudf_merge","cudf_partitioning"]
+!             + ["cudf_reductions","cudf_replace","cudf_reshape","cudf_rolling","cudf_transpose"],
+          language="c++",
+          extra_compile_args=["-std=c++14"],
++         define_macros=[('SPDLOG_FMT_EXTERNAL','1')],
+      )
+  ]
+  
