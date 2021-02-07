@@ -1,0 +1,56 @@
+*** llvmlite/ffi/transforms.cpp-dist	2020-11-12 13:00:29.566328570 +0900
+--- llvmlite/ffi/transforms.cpp	2020-11-12 13:00:42.099542044 +0900
+***************
+*** 6,22 ****
+  
+  extern "C" {
+  
+- namespace llvm {
+-     inline PassManagerBuilder *unwrap(LLVMPassManagerBuilderRef P) {
+-         return reinterpret_cast<PassManagerBuilder*>(P);
+-     }
+- 
+-     inline LLVMPassManagerBuilderRef wrap(PassManagerBuilder *P) {
+-         return reinterpret_cast<LLVMPassManagerBuilderRef>(P);
+-     }
+- }
+- 
+- 
+  API_EXPORT(LLVMPassManagerBuilderRef)
+  LLVMPY_PassManagerBuilderCreate()
+  {
+--- 6,11 ----
+*** llvmlite/ffi/custom_passes.cpp-dist	2020-11-12 13:02:10.915361248 +0900
+--- llvmlite/ffi/custom_passes.cpp	2020-11-12 13:02:39.815086176 +0900
+***************
+*** 404,409 ****
+--- 404,413 ----
+                  // LLVM 10 postdomtree.dominates can handle instructions
+                  if ( domtree.dominates(incref, decref)
+                          && postdomtree.dominates(decref, incref) ){
++ #elif LLVM_VERSION_MAJOR == 11
++                 // LLVM 11 postdomtree.dominates can handle instructions
++                 if ( domtree.dominates(incref, decref)
++                         && postdomtree.dominates(decref, incref) ){
+  #else
+  #error Invalid LLVM version/LLVM_VERSION_MAJOR not defined
+  #endif
+*** llvmlite/ffi/build.py-dist	Fri Jan 15 11:12:06 2021
+--- llvmlite/ffi/build.py	Fri Jan 15 11:13:18 2021
+***************
+*** 141,147 ****
+          print(warning + '\n')
+      else:
+  
+!         if not (out.startswith('10.0.') or out.startswith('9.0')):
+              msg = ("Building llvmlite requires LLVM 10.0.x or 9.0.x, got "
+                     "{!r}. Be sure to set LLVM_CONFIG to the right executable "
+                     "path.\nRead the documentation at "
+--- 141,147 ----
+          print(warning + '\n')
+      else:
+  
+!         if not (out.startswith('10.0.') or out.startswith('9.0') or out.startswith('11.0')):
+              msg = ("Building llvmlite requires LLVM 10.0.x or 9.0.x, got "
+                     "{!r}. Be sure to set LLVM_CONFIG to the right executable "
+                     "path.\nRead the documentation at "
