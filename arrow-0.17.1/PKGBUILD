@@ -3,13 +3,13 @@
 pkgname=('arrow-cuda')
 # pkgname=('arrow-cuda' 'python-pyarrow-cuda')
 pkgbase='arrow'
-pkgver=0.17.1
-pkgrel=2
+pkgver=1.0.1
+pkgrel=6
 pkgdesc="A columnar in-memory analytics layer for big data."
 arch=('x86_64')
 url="https://arrow.apache.org"
 license=('Apache')
-depends=( 'boost-libs' 'brotli' 'double-conversion' 'c-ares-cmake' 'gflags' 'grpc>=1.27.0' 'google-glog' 'lz4' 'protobuf' 'rapidjson' 'snappy' 'thrift' 'uriparser' 'zstd' 'cuda')
+depends=('gcc' 'boost-libs' 'brotli' 'double-conversion' 'c-ares-cmake' 'gflags' 'grpc>=1.27.0' 'google-glog' 'lz4' 'protobuf' 'rapidjson' 'snappy' 'thrift' 'uriparser' 'zstd' 'cuda')
 checkdepends=('git')
 optdepends=()
 makedepends=('apache-orc' 'boost' 'cmake' 'flatbuffers' 'python-numpy')
@@ -28,7 +28,6 @@ build(){
   CUDA_HOME=/opt/cuda \
   ARROW_BUILD_TOOLCHAIN=/usr ORC_HOME=/usr DOUBLE_CONVERSION_HOME=/usr cmake \
     ../$pkgbase-apache-$pkgbase-$pkgver/cpp -DARROW_DEPENDENCY_SOURCE=SYSTEM \
-                                      -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/g++ \
                                       -DARROW_PYTHON=ON \
                                       -DCMAKE_BUILD_TYPE=Release \
                                       -DARROW_BUILD_TESTS=OFF \
